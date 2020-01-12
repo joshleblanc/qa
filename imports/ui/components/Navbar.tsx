@@ -67,14 +67,14 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
         <div>
             <ToolbarPlaceholder />
             <Divider />
-            <List>
+            <List dense>
                 <ListItem button component={Link} to={"/questions"}>
                     <ListItemIcon><QuestionAnswerIcon/></ListItemIcon>
                     <ListItemText primary={"Questions"} />
                 </ListItem>
             </List>
             <Divider />
-            <List>
+            <List dense>
                 <ListItem button component={Link} to={"/ask"}>
                     <ListItemIcon><CreateIcon/></ListItemIcon>
                     <ListItemText primary={"Ask a question"} />
@@ -85,7 +85,7 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
 
     return (
         <>
-            <AppBar position="fixed" className={classes.appBar}>
+            <AppBar color="default" position="fixed" className={classes.appBar}>
                 <Toolbar>
                     <IconButton
                         color="inherit"

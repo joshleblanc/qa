@@ -11,33 +11,33 @@ import { MuiThemeProvider } from '@material-ui/core';
 import { getTheme } from './theme';
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        display: 'flex'
-    },
-    content: {
-        flexGrow: 1,
-        padding: theme.spacing(3),
-    }
+  root: {
+    display: 'flex'
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(0),
+  }
 }));
 
 export default () => {
     const classes = useStyles();
     return(
-        <MuiThemeProvider theme={getTheme()}>
-            <SnackbarProvider>
-                <div className={classes.root}>
-                    <CssBaseline />
-                    <BrowserRouter>
-                        <Navbar />
-                        <Container>
-                            <main className={classes.content}>
-                                <ToolbarPlaceholder />
-                                <Routes />
-                            </main>
-                        </Container>
-                    </BrowserRouter>
-                </div>
-            </SnackbarProvider>
-        </MuiThemeProvider>
+      <MuiThemeProvider theme={getTheme()}>
+        <SnackbarProvider>
+          <div className={classes.root}>
+            <CssBaseline />
+            <BrowserRouter>
+              <Navbar />
+              <Container maxWidth="xl">
+                <main className={classes.content}>
+                  <ToolbarPlaceholder />
+                  <Routes />
+                </main>
+              </Container>
+            </BrowserRouter>
+          </div>
+        </SnackbarProvider>
+      </MuiThemeProvider>
     );
 };
