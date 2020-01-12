@@ -7,6 +7,8 @@ import { BrowserRouter }  from 'react-router-dom';
 import Routes from "/imports/ui/Routes";
 import ToolbarPlaceholder from "/imports/ui/components/ToolbarPlaceholder";
 import {SnackbarProvider} from "notistack";
+import { MuiThemeProvider } from '@material-ui/core';
+import { getTheme } from './theme';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -21,20 +23,21 @@ const useStyles = makeStyles(theme => ({
 export default () => {
     const classes = useStyles();
     return(
-        <SnackbarProvider>
-            <div className={classes.root}>
-                <CssBaseline />
-                <BrowserRouter>
-                    <Navbar />
-                    <Container>
-                        <main className={classes.content}>
-                            <ToolbarPlaceholder />
-                            <Routes />
-                        </main>
-                    </Container>
-                </BrowserRouter>
-            </div>
-        </SnackbarProvider>
-
-    )
+        <MuiThemeProvider theme={getTheme()}>
+            <SnackbarProvider>
+                <div className={classes.root}>
+                    <CssBaseline />
+                    <BrowserRouter>
+                        <Navbar />
+                        <Container>
+                            <main className={classes.content}>
+                                <ToolbarPlaceholder />
+                                <Routes />
+                            </main>
+                        </Container>
+                    </BrowserRouter>
+                </div>
+            </SnackbarProvider>
+        </MuiThemeProvider>
+    );
 };
