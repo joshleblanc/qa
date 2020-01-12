@@ -11,7 +11,6 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
     },
     wrapper: {
-      margin: theme.spacing(1),
       position: 'relative',
     },
     buttonProgress: {
