@@ -6,6 +6,7 @@ import {Field, Form as FormikForm, Formik, FormikHelpers} from "formik";
 import {TextField} from "formik-material-ui";
 import StyledButton from "/imports/ui/components/material-ui/StyledButton";
 import { Typography, makeStyles } from "@material-ui/core";
+import "react-mde/lib/styles/css/react-mde-all.css";
 
 export interface AskFormValues {
   title: string,
@@ -26,7 +27,6 @@ const styles = makeStyles({
     maxWidth: "45vw"
   },
   title: {
-    fontWeight: 500,
     marginBottom: ".5rem"
   },
   buttons: {

@@ -13,7 +13,8 @@ const styles = (theme: Theme) => createStyles({
   },
   root: {
     display: "grid",
-    gridTemplateColumns: "7fr 3fr"
+    gridTemplateColumns: "7fr 3fr",
+    marginTop: theme.spacing(2)
   }
 });
 

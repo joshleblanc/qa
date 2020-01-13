@@ -15,10 +15,16 @@ export function getTheme(mode: "light"|"dark" = "light") {
       }
     },
     typography: {
-      fontFamily: "Heebo, sans-serif",
+      fontFamily: "Poppins, sans-serif",
       fontWeightBold: 900,
       fontWeightMedium: 500,
-      fontSize: 12
+      fontSize: 12,
+      h4: {
+        fontWeight: 300
+      },
+      h3: {
+        fontWeight: 300
+      }
     },
     shape: {
       borderRadius: 5
