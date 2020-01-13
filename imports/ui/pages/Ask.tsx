@@ -6,6 +6,7 @@ import { Meteor } from 'meteor/meteor';
 import {withSnackbar, WithSnackbarProps} from "notistack";
 import { withStyles, WithStyles, Theme, createStyles, Paper } from '@material-ui/core';
 import { AskFormValues, Form as AskForm } from '../components/question-ask/Form';
+import {StateStoreContext} from "/imports/ui/stores/state-store";
 
 const styles = (theme: Theme) => createStyles({
   formContainer: {
@@ -21,6 +22,12 @@ const styles = (theme: Theme) => createStyles({
 export interface AskQuestionProps extends WithSnackbarProps, WithStyles<typeof styles> {}
 
 class AskComponent extends React.Component<AskQuestionProps> {
+  static contextType = StateStoreContext;
+
+  componentDidMount() {
+    this.context.title = "Ask a question";
+  }
+
   public handleSubmit(values: AskFormValues, form: FormikHelpers<AskFormValues>) {
     const { enqueueSnackbar } = this.props;
     form.setSubmitting(true);

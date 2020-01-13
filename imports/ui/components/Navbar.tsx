@@ -7,6 +7,7 @@ import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/sty
 import { Link } from 'react-router-dom';
 import ToolbarPlaceholder from "/imports/ui/components/ToolbarPlaceholder";
 import { useStateStore } from '../stores/state-store';
+import { useTracker } from 'meteor/react-meteor-data';
 
 const drawerWidth = 240;
 
@@ -54,7 +55,8 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
     setMobileOpen(!mobileOpen);
   };
 
-  const { title } = useStateStore();
+  const store = useStateStore();
+  const title = useTracker(() => store.title);
 
   const drawer = (
     <div>
@@ -90,7 +92,7 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap>
-              Stonks
+                { title }
             </Typography>
         </Toolbar>
       </AppBar>

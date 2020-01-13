@@ -14,5 +14,5 @@ class StateStore {
   }
 }
 
-export const StateStoreContext = createContext(StateStore);
+export const StateStoreContext = createContext<StateStore>(new StateStore());
 export const useStateStore = () => useContext(StateStoreContext);
