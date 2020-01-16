@@ -4,13 +4,14 @@ import { autorun } from 'meteor/cereal:reactive-render';
 import {FormikHelpers} from "formik";
 import { Meteor } from 'meteor/meteor';
 import {withSnackbar, WithSnackbarProps} from "notistack";
-import { withStyles, WithStyles, Theme, createStyles, Paper } from '@material-ui/core';
+import { withStyles, WithStyles, Theme, createStyles } from '@material-ui/core';
 import { AskFormValues, Form as AskForm } from '../components/question-ask/Form';
 import {StateStoreContext} from "/imports/ui/stores/state-store";
+import StyledPaper from "/imports/ui/components/material-ui/StyledPaper";
 
 const styles = (theme: Theme) => createStyles({
   formContainer: {
-    background: "transparent",
+    // background: "transparent",
   },
   root: {
     display: "grid",
@@ -46,9 +47,9 @@ class AskComponent extends React.Component<AskQuestionProps> {
 
     return(
       <section className={classes.root}>
-        <Paper elevation={0} className={classes.formContainer}>
+        <StyledPaper elevation={0} className={classes.formContainer}>
           <AskForm submitHandler={(values: AskFormValues, form: FormikHelpers<AskFormValues>) => this.handleSubmit(values, form)} />
-        </Paper>
+        </StyledPaper>
       </section>
     )
   }

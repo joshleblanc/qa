@@ -5,7 +5,7 @@ import { schema as QuestionSchema } from '/imports/api/models/questions';
 import {Field, Form as FormikForm, Formik, FormikHelpers} from "formik";
 import {TextField} from "formik-material-ui";
 import StyledButton from "/imports/ui/components/material-ui/StyledButton";
-import { Typography, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import "react-mde/lib/styles/css/react-mde-all.css";
 
 export interface AskFormValues {
@@ -20,11 +20,11 @@ export interface FormProps {
 const styles = makeStyles({
   root: {},
   field: {
-    margin: ".5rem 0"
+    margin: ".5rem 0",
   },
   titleField: {
     margin: ".5rem 0",
-    maxWidth: "45vw"
+    maxWidth: "70%"
   },
   title: {
     marginBottom: ".5rem"
@@ -51,12 +51,11 @@ export const Form: React.FunctionComponent<FormProps> = ({ submitHandler }): JSX
     >
       {({ isSubmitting }) => (
         <FormikForm>
-          <Typography variant={"h4"} className={classes.title}>Ask a question</Typography>
           <Field
             name="title"
             label="Title"
             fullWidth
-            variant="filled"
+            variant="outlined"
             component={TextField}
             className={classes.titleField}
           />
@@ -65,7 +64,7 @@ export const Form: React.FunctionComponent<FormProps> = ({ submitHandler }): JSX
             label="Details"
             fullWidth
             multiline
-            variant="filled"
+            variant="outlined"
             component={TextField}
             className={classes.field}
             rows={15}

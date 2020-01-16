@@ -38,7 +38,7 @@ export default class Question extends React.Component<Props> {
         </StyledPaper>
       );
     }
-    this.context.title = question.title;
+    this.context.title = `Question: ${question.title}`;
 
     return(
       <StyledPaper>

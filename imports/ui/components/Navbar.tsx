@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme: Theme) =>
         flexShrink: 0,
       },
     },
+    appTitle: {
+      fontWeight: 900
+    },
     appBar: {
       [theme.breakpoints.up('sm')]: {
         width: `calc(100% - ${drawerWidth}px)`,
@@ -91,7 +94,7 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" noWrap>
+            <Typography variant="h6" noWrap className={classes.appTitle}>
                 { title }
             </Typography>
         </Toolbar>

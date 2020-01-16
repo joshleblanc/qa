@@ -3,6 +3,7 @@ import { Route, Switch }  from 'react-router-dom';
 import { Questions } from "/imports/ui/pages/Questions";
 import { Ask } from "/imports/ui/pages/Ask";
 import Question from '/imports/ui/pages/Question';
+import {Register} from "/imports/ui/pages/Register";
 
 export default () => {
   return(
@@ -10,6 +11,7 @@ export default () => {
       <Route path={"/questions/:id"} component={Question} />
       <Route path={"/questions"} component={Questions} />
       <Route path={"/ask"} component={Ask} />
+      <Route path={"/register"} component={Register} />
     </Switch>
   )
 }
