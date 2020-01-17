@@ -3,6 +3,10 @@ import { Mongo } from 'meteor/mongo';
 
 export interface User {
   _id?: string;
+  email: string;
+  password: string;
+  desc?: string;
+  username?: string;
   createdAt: Date;
   updatedAt: Date;
 }

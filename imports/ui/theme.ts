@@ -24,6 +24,12 @@ export function getTheme(mode: "light"|"dark" = "light") {
       },
       h3: {
         fontWeight: 300
+      },
+      h1: {
+        fontWeight: 700
+      },
+      h2: {
+        fontWeight: 700
       }
     },
     shape: {
