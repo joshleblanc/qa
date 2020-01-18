@@ -61,11 +61,7 @@ class RegisterComponent extends React.Component<RegisterProps> {
       enqueueSnackbar(<span>Emails do not match!</span>, { variant: "error" });
       return;
     }
-    if(values.password.length < 6) {
-      form.setSubmitting(false);
-      enqueueSnackbar(<span>Sorry, your password isn't 6 letters yet!</span>, { variant: "error" });
-      return;
-    }
+
     if(!values.termsAccept) {
       form.setSubmitting(false);
       enqueueSnackbar(<span>You have to accept out terms and agreements before proceeding!</span>, { variant: "error" });
