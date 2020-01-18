@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch }  from 'react-router-dom';
 import { Questions } from "/imports/ui/pages/Questions";
 import { Ask } from "/imports/ui/pages/Ask";
-import Question from '/imports/ui/pages/Question';
+import { Question } from '/imports/ui/pages/Question';
 import {Register} from "/imports/ui/pages/Register";
 import { Login } from './pages/Login';
 

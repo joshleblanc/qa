@@ -8,8 +8,15 @@ import Typography from "@material-ui/core/Typography";
 import {Meteor} from 'meteor/meteor';
 import {StateStoreContext} from "/imports/ui/stores/state-store";
 import Section from "/imports/ui/components/Section";
+import { WithStyles, createStyles, withStyles } from '@material-ui/core';
 
-type Props = {
+const styles = () => createStyles({
+  root: {
+    minHeight: "40vh"
+  }
+});
+
+export interface QuestionProps extends WithStyles<typeof styles>{
   match: {
     params: {
       id: string
@@ -17,19 +24,19 @@ type Props = {
   }
 }
 
-@autorun
-export default class Question extends React.Component<Props> {
+
+class QuestionComponent extends React.Component<QuestionProps> {
   static contextType = StateStoreContext;
 
   public render() {
-    const {match: {params: {id}}} = this.props;
+    const { match: { params: { id } } } = this.props;
     const loading = !Meteor.subscribe('question', id).ready();
     if (loading) {
       this.context.title = "Loading...";
       return <LinearProgress/>
     }
 
-    const question = Questions.findOne({_id: id});
+    const question = Questions.findOne({ _id: id });
 
     if (!question) {
       this.context.title = "Oopsie whoopsie";
@@ -41,14 +48,19 @@ export default class Question extends React.Component<Props> {
     }
     this.context.title = `Question: ${question.title}`;
 
+    const { classes } = this.props;
+    console.log(Meteor.user());
+
     return (
       <Section>
-        <StyledPaper>
-          <Typography>
+        <StyledPaper className={classes.root}>
+          <Typography variant={"body2"}>
             {question.details}
           </Typography>
         </StyledPaper>
       </Section>
     );
   }
-}
+};
+
+export const Question = withStyles(styles)(autorun(QuestionComponent));
