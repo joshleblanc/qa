@@ -9,6 +9,7 @@ import {StateStoreContext} from "/imports/ui/stores/state-store";
 import StyledPaper from "/imports/ui/components/material-ui/StyledPaper";
 import Section from "/imports/ui/components/Section";
 import {RouterProps} from "react-router";
+import SignupPrompt from "/imports/ui/components/SignupPrompt";
 
 export type AskQuestionProps = WithSnackbarProps & RouterProps
 
@@ -41,6 +42,9 @@ class AskComponent extends React.Component<AskQuestionProps> {
   };
 
   public render() {
+    if(!Meteor.user()) {
+      return <SignupPrompt />
+    }
     return(
       <Section>
         <StyledPaper elevation={0}>
