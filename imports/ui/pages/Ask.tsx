@@ -8,19 +8,12 @@ import { AskFormValues, Form as AskForm } from '../components/question-ask/Form'
 import {StateStoreContext} from "/imports/ui/stores/state-store";
 import StyledPaper from "/imports/ui/components/material-ui/StyledPaper";
 import Section from "/imports/ui/components/Section";
-import { Redirect } from 'react-router';
+import {RouterProps} from "react-router";
 
-export interface AskQuestionProps extends WithSnackbarProps {}
+export type AskQuestionProps = WithSnackbarProps & RouterProps
 
-export interface AskQuestionState {
-  redirectUri?: string;
-}
-
-class AskComponent extends React.Component<AskQuestionProps, AskQuestionState> {
+class AskComponent extends React.Component<AskQuestionProps> {
   static contextType = StateStoreContext;
-  public state: AskQuestionState = {
-    redirectUri: undefined
-  };
 
   componentDidMount() {
     this.context.title = "Ask a question";
@@ -41,7 +34,7 @@ class AskComponent extends React.Component<AskQuestionProps, AskQuestionState> {
         } else {
           enqueueSnackbar("Question created!", { variant: "success" });
           form.setSubmitting(false);
-          this.setState({ redirectUri: `/questions/${encodeURIComponent(questionId)}` });
+          this.props.history.push(`/questions/${encodeURIComponent(questionId)}`)
         }
       }
     );
@@ -50,7 +43,6 @@ class AskComponent extends React.Component<AskQuestionProps, AskQuestionState> {
   public render() {
     return(
       <Section>
-        {this.state.redirectUri && <Redirect to={this.state.redirectUri} />}
         <StyledPaper elevation={0}>
           <AskForm submitHandler={(values: AskFormValues, form: FormikHelpers<AskFormValues>) => this.handleSubmit(values, form)} />
         </StyledPaper>
