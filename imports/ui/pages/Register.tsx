@@ -66,13 +66,13 @@ class RegisterComponent extends React.Component<RegisterProps, RegisterState> {
     const { enqueueSnackbar } = this.props;
     if(values.email !== values.confirmEmail) {
       form.setSubmitting(false);
-      enqueueSnackbar(<span>Emails do not match!</span>, { variant: "error" });
+      enqueueSnackbar("Emails do not match!", { variant: "error" });
       return;
     }
 
     if(!values.termsAccept) {
       form.setSubmitting(false);
-      enqueueSnackbar(<span>You have to accept out terms and agreements before proceeding!</span>, { variant: "error" });
+      enqueueSnackbar("You have to accept out terms and agreements before proceeding!", { variant: "error" });
       return;
     }
     
@@ -83,10 +83,10 @@ class RegisterComponent extends React.Component<RegisterProps, RegisterState> {
     }, err => {
       if(err) {
         form.setSubmitting(false);
-        enqueueSnackbar(<span>Error while signing up: ${err.message}</span>, { variant: "error" });
+        enqueueSnackbar(`Error while signing up: ${err.message}`, { variant: "error" });
         return;
       }
-      enqueueSnackbar(<span>Signed up!</span>);
+      enqueueSnackbar("Signed up!", { variant: "success" });
       this.setState({ redirectToHome: true });
     });
   }
