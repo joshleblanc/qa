@@ -3,14 +3,15 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from '@material-ui/core/Container';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Navbar from './components/navbar/Navbar';
-import { BrowserRouter }  from 'react-router-dom';
+import {BrowserRouter, Switch} from 'react-router-dom';
 import Routes from "/imports/ui/Routes";
 import ToolbarPlaceholder from "/imports/ui/components/ToolbarPlaceholder";
 import {SnackbarProvider} from "notistack";
 import { MuiThemeProvider } from '@material-ui/core';
 import { getTheme } from './theme';
-import {useStateStore} from "/imports/ui/stores/state-store";
-import {useTracker} from "meteor/react-meteor-data";
+import {Route} from "react-router-dom";
+import {Register} from "/imports/ui/pages/Register";
+import {Login} from "/imports/ui/pages/Login";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,19 +25,16 @@ const useStyles = makeStyles(theme => ({
 
 export default () => {
     const classes = useStyles();
-    const store = useStateStore();
-    const removeOtherElements = useTracker(() => store.removeOtherElements);
-
     return (
       <MuiThemeProvider theme={getTheme("dark")}>
         <SnackbarProvider>
           <div className={classes.root}>
             <CssBaseline />
             <BrowserRouter>
-              {removeOtherElements ? (
-                <Routes />
-              ) : (
-                <>
+              <Switch>
+                <Route path={"/register"} component={Register} />
+                <Route path={"/login"} component={Login} />
+                <Route>
                   <Navbar />
                   <Container maxWidth="xl">
                     <main className={classes.content}>
@@ -44,8 +42,9 @@ export default () => {
                       <Routes />
                     </main>
                   </Container>
-                </>
-              )}
+                </Route>
+              </Switch>
+
             </BrowserRouter>
           </div>
         </SnackbarProvider>

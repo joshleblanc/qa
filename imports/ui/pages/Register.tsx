@@ -55,12 +55,10 @@ class RegisterComponent extends React.Component<RegisterProps, RegisterState> {
   };
 
   public componentDidMount(): void {
-    this.context.removeOtherElements = true;
     document.body.style.overflow = "hidden";
   }
   
   public componentWillUnmount(): void {
-    this.context.removeOtherElements = false;
     document.body.style.overflow = "auto";
   }
 
