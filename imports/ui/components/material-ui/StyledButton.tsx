@@ -4,7 +4,7 @@ import {createStyles, makeStyles, Theme} from "@material-ui/core";
 import green from '@material-ui/core/colors/green';
 import CircularProgress from "/node_modules/@material-ui/core/CircularProgress";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
       display: 'flex',
