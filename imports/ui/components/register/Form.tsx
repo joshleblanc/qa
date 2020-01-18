@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core';
 import StyledButton from '../material-ui/StyledButton';
 
 const styles = makeStyles({
-  field: {
+  fields: {
     width: "60%"
   }
 });
@@ -40,52 +40,53 @@ export const Form: React.FunctionComponent<RegisterFormProps> = ({ submitHandler
         onSubmit={submitHandler}
       >
         {({ isSubmitting, isValid }) => (
-          <FormikForm>
-            <Field
-              name={"email"}
-              label={"Email"}
-              variant="outlined"
-              fullWidth
-              className={classes.field}
-              component={TextField}
-              margin={"normal"}
-            />
-            <Field
-              name={"confirmEmail"}
-              label={"Confirm Email"}
-              variant="outlined"
-              fullWidth
-              className={classes.field}
-              component={TextField}
-              margin={"normal"}
-            />
-            <Field
-              name={"password"}
-              label={"Password"}
-              variant="outlined"
-              fullWidth
-              margin={"normal"}
-              className={classes.field}
-              component={TextField}
-              type="password"
-            />
-            <br />
-            <Field
-              name={"acceptTerms"}
-              Label={{ label: "Accept our Terms and Agreements" }}
-              component={CheckboxWithLabel}
-            />
-            <br />
-            <StyledButton
-              color={"primary"}
-              variant={"contained"}
-              type="submit"
-              loading={isSubmitting}
-              disabled={!isValid}
-            >
-              Register
-            </StyledButton>
-          </FormikForm>
+
+            <FormikForm>
+              <div className={classes.fields}>
+              <Field
+                name={"email"}
+                label={"Email"}
+                variant="outlined"
+                fullWidth
+                component={TextField}
+                margin={"normal"}
+              />
+              <Field
+                name={"confirmEmail"}
+                label={"Confirm Email"}
+                variant="outlined"
+                fullWidth
+                component={TextField}
+                margin={"normal"}
+              />
+              <Field
+                name={"password"}
+                label={"Password"}
+                variant="outlined"
+                fullWidth
+                margin={"normal"}
+                component={TextField}
+                type="password"
+              />
+              <br />
+              </div>
+              <Field
+                name={"acceptTerms"}
+                Label={{ label: "Accept our Terms and Agreements" }}
+                component={CheckboxWithLabel}
+              />
+              <br />
+              <StyledButton
+                color={"primary"}
+                variant={"contained"}
+                type="submit"
+                loading={isSubmitting}
+                disabled={!isValid}
+              >
+                Register
+              </StyledButton>
+            </FormikForm>
+
         )}
       </Formik>
     </section>
