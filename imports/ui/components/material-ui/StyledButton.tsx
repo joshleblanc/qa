@@ -1,6 +1,6 @@
 import React from 'react';
 import Button, {ButtonProps} from '@material-ui/core/Button';
-import {createStyles, makeStyles, Theme} from "@material-ui/core";
+import {createStyles, makeStyles} from "@material-ui/core";
 import green from '@material-ui/core/colors/green';
 import CircularProgress from "/node_modules/@material-ui/core/CircularProgress";
 
