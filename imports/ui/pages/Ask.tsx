@@ -8,12 +8,19 @@ import { AskFormValues, Form as AskForm } from '../components/question-ask/Form'
 import {StateStoreContext} from "/imports/ui/stores/state-store";
 import StyledPaper from "/imports/ui/components/material-ui/StyledPaper";
 import Section from "/imports/ui/components/Section";
+import { Redirect } from 'react-router';
 
 export interface AskQuestionProps extends WithSnackbarProps {}
 
-@autorun
-class AskComponent extends React.Component<AskQuestionProps> {
+export interface AskQuestionState {
+  redirectUri?: string;
+}
+
+class AskComponent extends React.Component<AskQuestionProps, AskQuestionState> {
   static contextType = StateStoreContext;
+  public state: AskQuestionState = {
+    redirectUri: undefined
+  };
 
   componentDidMount() {
     this.context.title = "Ask a question";
@@ -22,19 +29,28 @@ class AskComponent extends React.Component<AskQuestionProps> {
   public handleSubmit(values: AskFormValues, form: FormikHelpers<AskFormValues>) {
     const { enqueueSnackbar } = this.props;
     form.setSubmitting(true);
-    Meteor.call('questions.create', values.title, values.details, (err: Meteor.Error) => {
-      if(!err) {
-        enqueueSnackbar("Question submitted!", { variant: "success" });
-      } else {
-        enqueueSnackbar(err.error, { variant: "error" });
+    Meteor.call(
+      'questions.create',
+      values.title,
+      values.details,
+      Meteor.user(),
+      new Set(),
+      (err: Meteor.Error, questionId: string) => {
+        if(!err) {
+          enqueueSnackbar("Question created!");
+          form.setSubmitting(false);
+          this.setState({ redirectUri: `/questions/${encodeURIComponent(questionId)}` });
+        } else {
+          enqueueSnackbar(err.error, { variant: "error" });
+        }
       }
-      form.setSubmitting(false);
-    });
+    );
   };
 
   public render() {
     return(
       <Section>
+        {this.state.redirectUri && <Redirect to={this.state.redirectUri} />}
         <StyledPaper elevation={0}>
           <AskForm submitHandler={(values: AskFormValues, form: FormikHelpers<AskFormValues>) => this.handleSubmit(values, form)} />
         </StyledPaper>
@@ -43,4 +59,4 @@ class AskComponent extends React.Component<AskQuestionProps> {
   }
 }
 
-export const Ask = withSnackbar(AskComponent);
+export const Ask = withSnackbar(autorun(AskComponent));
