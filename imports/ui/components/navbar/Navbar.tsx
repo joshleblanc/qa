@@ -4,10 +4,12 @@ import { Typography, Toolbar, ListItem, ListItemText, ListItemIcon, List, IconBu
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import CreateIcon from '@material-ui/icons/Create';
 import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import ToolbarPlaceholder from "/imports/ui/components/ToolbarPlaceholder";
-import { useStateStore } from '../stores/state-store';
+import { useStateStore } from '../../stores/state-store';
 import { useTracker } from 'meteor/react-meteor-data';
+import Grow from "/imports/ui/components/Grow";
+import AccountButtons from "/imports/ui/components/navbar/AccountButtons";
 
 const drawerWidth = 240;
 
@@ -97,6 +99,8 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
             <Typography variant="h6" noWrap className={classes.appTitle}>
                 { title }
             </Typography>
+            <Grow />
+            <AccountButtons />
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">

@@ -2,7 +2,7 @@ import * as React from 'react';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from '@material-ui/core/Container';
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import Navbar from './components/Navbar';
+import Navbar from './components/navbar/Navbar';
 import { BrowserRouter }  from 'react-router-dom';
 import Routes from "/imports/ui/Routes";
 import ToolbarPlaceholder from "/imports/ui/components/ToolbarPlaceholder";
