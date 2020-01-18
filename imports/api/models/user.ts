@@ -14,7 +14,8 @@ export interface User {
 export const UserSchema = yup.object().shape({
   email: yup.string().email('Invalid email').required(),
   password: yup.string().min(6, "Password must be at least 6 characters").required(),
-  desc: yup.string().notRequired()
+  desc: yup.string().notRequired(),
+  username: yup.string().notRequired()
 });
 
 export const Users = Meteor.users;

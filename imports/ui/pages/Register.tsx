@@ -8,8 +8,9 @@ import Typography from "@material-ui/core/Typography";
 import { Form as RegisterForm, RegisterFormValues } from "../components/register/Form";
 import { Accounts } from 'meteor/accounts-base';
 import { FormikHelpers } from 'formik';
+import { AUTH_CLIP_PATH_STYLE } from '../stores/constants';
 
-const styles = (theme: Theme) => createStyles({
+export const authenticationStyles = (theme: Theme) => createStyles({
   root: {
     position: 'fixed',
     top: 0,
@@ -22,7 +23,7 @@ const styles = (theme: Theme) => createStyles({
     overflow: "hidden"
   },
   container: {
-    clipPath: "polygon(99% 0%, 0px 0px, 0px 51%, 0px 100%, 35.22% 83.82%, 56.40% 74.42%, 63.22% 53.8%, 84.39% 43.69%, 88.04% 24%, 98.47% 19.21%)",
+    clipPath: AUTH_CLIP_PATH_STYLE,
     background: theme.palette.type === "light" ? "rgba(255,255,255,.6)" : "rgba(0,0,0,.6)",
     top: 0,
     left: 0,
@@ -38,7 +39,7 @@ const styles = (theme: Theme) => createStyles({
   }
 });
 
-export interface RegisterProps extends WithSnackbarProps, WithStyles<typeof styles> {}
+export interface RegisterProps extends WithSnackbarProps, WithStyles<typeof authenticationStyles> {}
 
 @autorun
 class RegisterComponent extends React.Component<RegisterProps> {
@@ -54,7 +55,7 @@ class RegisterComponent extends React.Component<RegisterProps> {
     document.body.style.overflow = "auto";
   }
 
-  private createUser(values: RegisterFormValues, form: FormikHelpers<RegisterFormValues>) {
+  private createUser(values: RegisterFormValues, form: FormikHelpers<RegisterFormValues>): void {
     const { enqueueSnackbar } = this.props;
     if(values.email !== values.confirmEmail) {
       form.setSubmitting(false);
@@ -98,4 +99,4 @@ class RegisterComponent extends React.Component<RegisterProps> {
   }
 }
 
-export const Register = withStyles(styles)(withSnackbar(RegisterComponent));
+export const Register = withStyles(authenticationStyles)(withSnackbar(autorun(RegisterComponent)));

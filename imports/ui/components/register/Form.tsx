@@ -70,7 +70,7 @@ export const Form: React.FunctionComponent<RegisterFormProps> = ({ submitHandler
               />
               </div>
               <Field
-                name={"acceptTerms"}
+                name={"termsAccept"}
                 Label={{ label: "Accept our Terms and Agreements" }}
                 component={CheckboxWithLabel}
               />

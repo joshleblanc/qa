@@ -1,1 +1,2 @@
 export const APP_NAME = "Question/Answer";
+export const AUTH_CLIP_PATH_STYLE = "polygon(99% 0%, 0px 0px, 0px 51%, 0px 100%, 35.22% 83.82%, 56.40% 74.42%, 63.22% 53.8%, 84.39% 43.69%, 88.04% 24%, 98.47% 19.21%)";

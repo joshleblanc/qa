@@ -23,7 +23,6 @@ class StateStore {
   }
 
   set removeOtherElements(value: boolean) {
-    console.log(`Removal ${value}`);
     this.state.set('removeOtherElements', value);
   }
 }
