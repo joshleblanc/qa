@@ -68,14 +68,12 @@ export const Form: React.FunctionComponent<RegisterFormProps> = ({ submitHandler
                 component={TextField}
                 type="password"
               />
-              <br />
               </div>
               <Field
                 name={"acceptTerms"}
                 Label={{ label: "Accept our Terms and Agreements" }}
                 component={CheckboxWithLabel}
               />
-              <br />
               <StyledButton
                 color={"primary"}
                 variant={"contained"}
