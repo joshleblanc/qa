@@ -56,6 +56,7 @@ mongo-id@1.0.7
 npm-bcrypt@0.9.3
 npm-mongo@3.4.0-beta110.4
 ordered-dict@1.1.0
+percolate:migrations@1.0.2
 promise@0.11.2
 random@1.1.0
 rate-limit@1.0.9
