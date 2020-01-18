@@ -1,5 +1,5 @@
 import yup from 'yup';
-import { Mongo } from 'meteor/mongo';
+import { Meteor } from 'meteor/meteor';
 
 export interface User {
   _id?: string;
@@ -17,4 +17,4 @@ export const UserSchema = yup.object().shape({
   desc: yup.string().notRequired()
 });
 
-export const Users = new Mongo.Collection<User>('users');
+export const Users = Meteor.users;
