@@ -9,7 +9,7 @@ const styles = makeStyles({
   field: {
     width: "60%"
   }
-})
+});
 
 export interface RegisterFormValues {
   email: string;
@@ -36,9 +36,10 @@ export const Form: React.FunctionComponent<RegisterFormProps> = ({ submitHandler
           password: "",
           termsAccept: false
         }}
+        validateOnMount={true}
         onSubmit={submitHandler}
       >
-        {({ isSubmitting }) => (
+        {({ isSubmitting, isValid }) => (
           <FormikForm>
             <Field
               name={"email"}
@@ -80,6 +81,7 @@ export const Form: React.FunctionComponent<RegisterFormProps> = ({ submitHandler
               variant={"contained"}
               type="submit"
               loading={isSubmitting}
+              disabled={!isValid}
             >
               Register
             </StyledButton>
