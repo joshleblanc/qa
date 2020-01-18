@@ -10,7 +10,7 @@ import {withSnackbar, WithSnackbarProps} from "notistack";
 import {searchTagsByName, Tags} from "/imports/api/models/tags";
 import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
-import {createStyles, Theme} from '@material-ui/core';
+import {createStyles, Theme, WithStyles} from '@material-ui/core';
 import withStyles from "@material-ui/core/styles/withStyles";
 import {FieldProps} from "formik";
 
@@ -18,7 +18,7 @@ type State = {
   value: string,
 }
 
-const styles = createStyles((theme:Theme) => ({
+const styles = (theme:Theme) => createStyles({
   adornment: {
     margin: theme.spacing(1),
     marginLeft: 0,
@@ -27,14 +27,9 @@ const styles = createStyles((theme:Theme) => ({
   chip: {
     marginRight: theme.spacing(1),
   }
-}));
+});
 
-type Props = {
-  classes: {
-    adornment: string,
-    chip: string
-  }
-} & WithSnackbarProps & FieldProps;
+type Props = WithStyles<typeof styles> & WithSnackbarProps & FieldProps;
 
 @autorun
 class TagSelect extends React.Component<Props> {
@@ -142,4 +137,4 @@ class TagSelect extends React.Component<Props> {
   }
 }
 
-export default withSnackbar(withStyles(styles)(TagSelect)))
+export default withStyles(styles)(withSnackbar(TagSelect))
