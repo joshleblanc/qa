@@ -16,7 +16,6 @@ import {FieldProps} from "formik";
 
 type State = {
   value: string,
-  selected: string[]
 }
 
 const styles = createStyles((theme:Theme) => ({
@@ -41,8 +40,7 @@ type Props = {
 class TagSelect extends React.Component<Props> {
   anchorEl: HTMLDivElement | null = null;
   state: State = {
-    value: "",
-    selected: []
+    value: ""
   };
 
   handleChange: ChangeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -58,16 +56,9 @@ class TagSelect extends React.Component<Props> {
   };
 
   addTag = (id:string) => {
-    this.setState((prevState: State) => {
-      return {
-        selected: [
-          ...prevState.selected,
-          id
-        ],
-        value: ""
-      }
-    });
-    // this.props.form.setFieldValue(this.props.field.name, )
+    const { form, field } = this.props;
+    this.setState({ value: "" });
+    form.setFieldValue(field.name, [ ...form.values[field.name], id]);
   };
 
   handleCreateTag = () => {
@@ -88,16 +79,20 @@ class TagSelect extends React.Component<Props> {
   };
 
   handleDelete = (id: string) => {
-    this.setState((prevState: State) => ({
-      selected: prevState.selected.filter((s: string) => s !== id)
-    }))
+    const { form, field } = this.props;
+    form.setFieldValue(field.name, form.values[field.name].filter((s: string) => s !== id));
   };
 
+  get selected() {
+    const { form, field } = this.props;
+    return form.values[field.name];
+  }
+
   render() {
-    const {value, selected} = this.state;
+    const { value } = this.state;
     const { classes } = this.props;
 
-    Meteor.subscribe('tags.byIds', selected);
+    Meteor.subscribe('tags.byIds', this.selected);
     Meteor.subscribe('tags.search', value);
 
     const tags = searchTagsByName(value);
@@ -115,7 +110,7 @@ class TagSelect extends React.Component<Props> {
             InputProps={{
               startAdornment: <div className={classes.adornment}>
                 {
-                  selected.map((id: string) => {
+                  this.selected.map((id: string) => {
                     const tag = Tags.findOne(id);
                     if (tag) {
                       return <Chip
@@ -147,4 +142,4 @@ class TagSelect extends React.Component<Props> {
   }
 }
 
-export default withSnackbar(withStyles(styles)(TagSelect)));
+export default withSnackbar(withStyles(styles)(TagSelect)))

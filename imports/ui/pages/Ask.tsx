@@ -33,15 +33,15 @@ class AskComponent extends React.Component<AskQuestionProps, AskQuestionState> {
       'questions.create',
       values.title,
       values.details,
-      Meteor.user(),
-      new Set(),
+      Meteor.userId(),
+      values.tagIds,
       (err: Meteor.Error, questionId: string) => {
-        if(!err) {
-          enqueueSnackbar("Question created!");
+        if(err) {
+          enqueueSnackbar(err.error, { variant: "error" });
+        } else {
+          enqueueSnackbar("Question created!", { variant: "success" });
           form.setSubmitting(false);
           this.setState({ redirectUri: `/questions/${encodeURIComponent(questionId)}` });
-        } else {
-          enqueueSnackbar(err.error, { variant: "error" });
         }
       }
     );

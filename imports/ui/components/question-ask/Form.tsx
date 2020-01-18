@@ -1,6 +1,4 @@
 import * as React from 'react';
-// @ts-ignore
-import { autorun } from 'meteor/cereal:reactive-render';
 import { schema as QuestionSchema } from '/imports/api/models/questions';
 import {Field, Form as FormikForm, Formik, FormikHelpers} from "formik";
 import {TextField} from "formik-material-ui";
@@ -11,14 +9,15 @@ import TagSelect from "/imports/ui/components/question-ask/TagSelect";
 
 export interface AskFormValues {
   title: string,
-  details: string
+  details: string,
+  tagIds: string[]
 }
 
 export interface FormProps {
   submitHandler: (values: AskFormValues, form: FormikHelpers<AskFormValues>) => void;
 }
 
-const styles = makeStyles({
+const useStyles = makeStyles({
   root: {},
   titleField: {
     maxWidth: "70%"
@@ -31,16 +30,19 @@ const styles = makeStyles({
   }
 });
 
+const initialValues:AskFormValues = {
+  title: "",
+  details: "",
+  tagIds: []
+};
+
 export const Form: React.FunctionComponent<FormProps> = ({ submitHandler }): JSX.Element => {
-  const classes = styles();
+  const classes = useStyles();
 
   return (
     <Formik
         validationSchema={QuestionSchema}
-        initialValues={{
-          title: "",
-          details: ""
-        }}
+        initialValues={initialValues}
         onSubmit={submitHandler}
     >
       {({ isSubmitting }) => (
@@ -65,7 +67,7 @@ export const Form: React.FunctionComponent<FormProps> = ({ submitHandler }): JSX
             rows={15}
             rowsMax={15}
           />
-          <Field name="tags" component={TagSelect} />
+          <Field name="tagIds" component={TagSelect} />
           <StyledButton
             color="primary"
             variant="contained"
@@ -80,4 +82,4 @@ export const Form: React.FunctionComponent<FormProps> = ({ submitHandler }): JSX
       )}
     </Formik>
   )
-}
+};
