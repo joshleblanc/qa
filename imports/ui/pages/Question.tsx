@@ -39,7 +39,10 @@ class QuestionComponent extends React.Component<QuestionProps> {
     }
 
     const question = Questions.findOne({_id: id});
-    const tags = Tags.find({_id: {$in: question.tagIds}});
+    let tags = [];
+    if(question.tagIds) {
+      tags = Tags.find({_id: {$in: question.tagIds}});
+    }
 
     if (!question) {
       this.context.title = "Oopsie whoopsie";
