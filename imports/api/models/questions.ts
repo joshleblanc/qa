@@ -12,8 +12,9 @@ export interface Question {
 }
 
 export const schema = yup.object().shape({
-  title: yup.string().notRequired(),
-  details: yup.string().notRequired()
+  title: yup.string().required(),
+  details: yup.string().required(),
+  tagIds: yup.array().of(yup.string())
 });
 
 export const Questions = new Mongo.Collection<Question>('questions');

@@ -44,8 +44,9 @@ export const Form: React.FunctionComponent<FormProps> = ({ submitHandler }): JSX
         validationSchema={QuestionSchema}
         initialValues={initialValues}
         onSubmit={submitHandler}
+        validateOnMount={true}
     >
-      {({ isSubmitting }) => (
+      {({ isSubmitting, isValid }) => (
         <FormikForm>
           <Field
             name="title"
@@ -75,6 +76,7 @@ export const Form: React.FunctionComponent<FormProps> = ({ submitHandler }): JSX
             type="submit"
             loading={isSubmitting}
             className={classes.buttons}
+            disabled={!isValid}
           >
             Submit
           </StyledButton>
