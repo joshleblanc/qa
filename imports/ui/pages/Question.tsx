@@ -39,10 +39,7 @@ class QuestionComponent extends React.Component<QuestionProps> {
     }
 
     const question = Questions.findOne({_id: id});
-    let tags = [];
-    if(question.tagIds) {
-      tags = Tags.find({_id: {$in: question.tagIds}});
-    }
+
 
     if (!question) {
       this.context.title = "Oopsie whoopsie";
@@ -53,7 +50,7 @@ class QuestionComponent extends React.Component<QuestionProps> {
       );
     }
     this.context.title = `Question: ${question.title}`;
-
+    const tags = Tags.find({_id: {$in: question.tagIds}});
     const {classes} = this.props;
 
     return (
