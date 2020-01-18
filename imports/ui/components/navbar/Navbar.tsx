@@ -55,12 +55,13 @@ interface ResponsiveDrawerProps {
    * You won't need it on your project.
    */
   container?: Element;
-};
+}
 
 export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
   const { container } = props;
   const classes = useStyles();
   const theme = useTheme();
+  const history = useHistory();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -70,10 +71,7 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
   function logoutUser() {
     Meteor.logout(err => {
       if(err) { console.error(err); return; }
-      
-      // const history = useHistory();
-      // history.push('/');
-      // does not work... hmm
+      history.push('/');
     });
   }
 
