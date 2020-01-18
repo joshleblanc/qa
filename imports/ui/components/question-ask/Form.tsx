@@ -7,6 +7,7 @@ import {TextField} from "formik-material-ui";
 import StyledButton from "/imports/ui/components/material-ui/StyledButton";
 import { makeStyles } from "@material-ui/core";
 import "react-mde/lib/styles/css/react-mde-all.css";
+import TagSelect from "/imports/ui/components/question-ask/TagSelect";
 
 export interface AskFormValues {
   title: string,
@@ -19,15 +20,8 @@ export interface FormProps {
 
 const styles = makeStyles({
   root: {},
-  field: {
-    margin: ".5rem 0",
-  },
   titleField: {
-    margin: ".5rem 0",
     maxWidth: "70%"
-  },
-  title: {
-    marginBottom: ".5rem"
   },
   buttons: {
     borderRadius: 4,
@@ -55,6 +49,7 @@ export const Form: React.FunctionComponent<FormProps> = ({ submitHandler }): JSX
             name="title"
             label="Title"
             fullWidth
+            margin="normal"
             variant="outlined"
             component={TextField}
             className={classes.titleField}
@@ -64,12 +59,13 @@ export const Form: React.FunctionComponent<FormProps> = ({ submitHandler }): JSX
             label="Details"
             fullWidth
             multiline
+            margin="dense"
             variant="outlined"
             component={TextField}
-            className={classes.field}
             rows={15}
             rowsMax={15}
           />
+          <Field name="tags" component={TagSelect} />
           <StyledButton
             color="primary"
             variant="contained"
