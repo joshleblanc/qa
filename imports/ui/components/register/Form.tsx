@@ -1,14 +1,25 @@
 import * as React from 'react';
 import {Field, Form as FormikForm, Formik, FormikHelpers} from "formik";
-import {UserSchema} from "/imports/api/models/user";
-import {TextField, CheckboxWithLabel} from "formik-material-ui";
-import { makeStyles } from '@material-ui/core';
+import {TextField, Checkbox} from "formik-material-ui";
+import {createStyles, makeStyles, Theme} from '@material-ui/core';
 import StyledButton from '../material-ui/StyledButton';
+import yup from "yup";
+import FormControlLabel from "/node_modules/@material-ui/core/FormControlLabel";
+import FormHelperText from "/node_modules/@material-ui/core/FormHelperText";
+import FormControl from "/node_modules/@material-ui/core/FormControl";
 
-const styles = makeStyles({
-  fields: {
-    width: "60%"
-  }
+const styles = makeStyles((theme: Theme) => {
+  return createStyles({
+    fields: {
+      width: "60%"
+    },
+    helperText: {
+      marginTop: -theme.spacing(1)
+    },
+    checkbox: {
+      marginBottom: theme.spacing(1)
+    }
+  })
 });
 
 export interface RegisterFormValues {
@@ -23,13 +34,20 @@ export interface RegisterFormProps {
   className?: string;
 }
 
-export const Form: React.FunctionComponent<RegisterFormProps> = ({ submitHandler, className }: RegisterFormProps): JSX.Element => {
+const RegisterSchema = yup.object().shape({
+  email: yup.string().email().required("Email is a required field"),
+  confirmEmail: yup.string().required("Confirm email is a required field").email().oneOf([yup.ref('email')], "Emails must match"),
+  password: yup.string().required("Password is a required field").min(6, "Password must be at least 6 characters"),
+  termsAccept: yup.boolean().oneOf([true], "You must accept out terms and agreements")
+});
+
+export const Form: React.FunctionComponent<RegisterFormProps> = ({submitHandler, className}: RegisterFormProps): JSX.Element => {
   const classes = styles();
 
   return (
     <section className={className}>
       <Formik
-        validationSchema={UserSchema}
+        validationSchema={RegisterSchema}
         initialValues={{
           email: "",
           confirmEmail: "",
@@ -39,10 +57,9 @@ export const Form: React.FunctionComponent<RegisterFormProps> = ({ submitHandler
         validateOnMount={true}
         onSubmit={submitHandler}
       >
-        {({ isSubmitting, isValid }) => (
-
-            <FormikForm>
-              <div className={classes.fields}>
+        {({errors, isSubmitting, isValid}) => (
+          <FormikForm>
+            <div className={classes.fields}>
               <Field
                 name={"email"}
                 label={"Email"}
@@ -68,22 +85,27 @@ export const Form: React.FunctionComponent<RegisterFormProps> = ({ submitHandler
                 component={TextField}
                 type="password"
               />
-              </div>
-              <Field
-                name={"termsAccept"}
-                Label={{ label: "Accept our Terms and Agreements" }}
-                component={CheckboxWithLabel}
+            </div>
+            <FormControl className={classes.checkbox}>
+              <FormControlLabel
+                control={
+                  <Field label="Accept our Terms and Agreements" name="termsAccept" component={Checkbox}/>
+                }
+                label={"Accept our Terms and Agreements"}
               />
-              <StyledButton
-                color={"primary"}
-                variant={"contained"}
-                type="submit"
-                loading={isSubmitting}
-                disabled={!isValid}
-              >
-                Register
-              </StyledButton>
-            </FormikForm>
+              <FormHelperText className={classes.helperText} error>{errors["termsAccept"]}</FormHelperText>
+            </FormControl>
+
+            <StyledButton
+              color={"primary"}
+              variant={"contained"}
+              type="submit"
+              loading={isSubmitting}
+              disabled={!isValid}
+            >
+              Register
+            </StyledButton>
+          </FormikForm>
 
         )}
       </Formik>
