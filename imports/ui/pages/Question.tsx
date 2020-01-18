@@ -52,7 +52,6 @@ class QuestionComponent extends React.Component<QuestionProps> {
     this.context.title = `Question: ${question.title}`;
 
     const {classes} = this.props;
-    console.log(Meteor.user());
 
     return (
       <Section>
