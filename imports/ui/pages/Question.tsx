@@ -72,6 +72,6 @@ class QuestionComponent extends React.Component<QuestionProps> {
       </Section>
     );
   }
-};
+}
 
 export const Question = withStyles(styles)(autorun(QuestionComponent));
