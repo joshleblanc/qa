@@ -37,11 +37,11 @@ class LoginComponent extends React.Component<LoginProps, LoginState> {
     Meteor.loginWithPassword(values.email, values.password, err => {
       if(err) {
         form.setSubmitting(false);
-        enqueueSnackbar(<span>Failed to login: {err.message}</span>, { variant: "error" });
+        enqueueSnackbar(`Failed to login: ${err.message}`, { variant: "error" });
         return;
       }
 
-      enqueueSnackbar(<span>Logged in successfully!</span>);
+      enqueueSnackbar("Logged in successfully!", { variant: "success"});
       this.setState({ redirectToHome: true });
     });
   }
