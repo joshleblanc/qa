@@ -3,13 +3,12 @@ import * as React from 'react';
 import { autorun } from 'meteor/cereal:reactive-render';
 import {createStyles, Theme, WithStyles, withStyles} from "@material-ui/core";
 import {WithSnackbarProps, withSnackbar} from "notistack";
-import {StateStoreContext} from "/imports/ui/stores/state-store";
 import Typography from "@material-ui/core/Typography";
 import { Form as RegisterForm, RegisterFormValues } from "../components/register/Form";
 import { Accounts } from 'meteor/accounts-base';
 import { FormikHelpers } from 'formik';
 import { AUTH_CLIP_PATH_STYLE } from '../stores/constants';
-import { Redirect } from 'react-router';
+import {RouterProps} from 'react-router';
 
 export const authenticationStyles = (theme: Theme) => createStyles({
   root: {
@@ -40,19 +39,10 @@ export const authenticationStyles = (theme: Theme) => createStyles({
   }
 });
 
-export interface RegisterProps extends WithSnackbarProps, WithStyles<typeof authenticationStyles> {}
-
-export interface RegisterState {
-  redirectToHome: boolean;
-}
+export interface RegisterProps extends WithSnackbarProps, WithStyles<typeof authenticationStyles>, RouterProps {}
 
 @autorun
-class RegisterComponent extends React.Component<RegisterProps, RegisterState> {
-  static contextType = StateStoreContext;
-
-  public state: RegisterState = {
-    redirectToHome: false
-  };
+class RegisterComponent extends React.Component<RegisterProps> {
 
   public componentDidMount(): void {
     document.body.style.overflow = "hidden";
@@ -87,7 +77,7 @@ class RegisterComponent extends React.Component<RegisterProps, RegisterState> {
         return;
       }
       enqueueSnackbar("Signed up!", { variant: "success" });
-      this.setState({ redirectToHome: true });
+      this.props.history.push("/");
     });
   }
 
@@ -95,7 +85,6 @@ class RegisterComponent extends React.Component<RegisterProps, RegisterState> {
     const { classes } = this.props;
     return (
       <section className={classes.root}>
-        {this.state.redirectToHome && <Redirect to={"/"} />}
         <section className={classes.container}>
           <Typography variant={"h2"}>Register</Typography>
           <Typography variant={"h6"}>Join the community!</Typography>
