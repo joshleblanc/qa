@@ -11,11 +11,11 @@ import "react-mde/lib/styles/css/react-mde-all.css";
 export interface AskFormValues {
   title: string,
   details: string
-};
+}
 
 export interface FormProps {
   submitHandler: (values: AskFormValues, form: FormikHelpers<AskFormValues>) => void;
-};
+}
 
 const styles = makeStyles({
   root: {},
