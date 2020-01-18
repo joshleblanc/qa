@@ -80,7 +80,7 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
   const store = useStateStore();
   const title = useTracker(() => store.title);
 
-  const loggedIn = Boolean(Meteor.user());
+  const loggedIn = useTracker(() => Boolean(Meteor.user()));
 
   const drawer = (
     <div>
