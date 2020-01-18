@@ -40,7 +40,6 @@ class QuestionComponent extends React.Component<QuestionProps> {
 
     const question = Questions.findOne({_id: id});
 
-
     if (!question) {
       this.context.title = "Oopsie whoopsie";
       return (
@@ -67,6 +66,13 @@ class QuestionComponent extends React.Component<QuestionProps> {
               />;
             })
           }
+          <Typography>
+            Posted by:
+
+            {
+              question.userId ? Meteor.users.findOne(question.userId)!.username : "System"
+            }
+          </Typography>
         </StyledPaper>
       </Section>
     );
