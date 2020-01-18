@@ -12,7 +12,6 @@ import ToolbarPlaceholder from "/imports/ui/components/ToolbarPlaceholder";
 import { useStateStore } from '../../stores/state-store';
 import { useTracker } from 'meteor/react-meteor-data';
 import Grow from "/imports/ui/components/Grow";
-import AccountButtons from "/imports/ui/components/navbar/AccountButtons";
 import { Meteor } from 'meteor/meteor';
 
 const drawerWidth = 240;
