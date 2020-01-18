@@ -40,6 +40,7 @@ const styles = (theme: Theme) => createStyles({
 
 export interface RegisterProps extends WithSnackbarProps, WithStyles<typeof styles> {}
 
+@autorun
 class RegisterComponent extends React.Component<RegisterProps> {
   static contextType = StateStoreContext;
 
@@ -101,4 +102,4 @@ class RegisterComponent extends React.Component<RegisterProps> {
   }
 }
 
-export const Register = withStyles(styles)(withSnackbar(autorun(RegisterComponent)));
+export const Register = withStyles(styles)(withSnackbar(RegisterComponent));

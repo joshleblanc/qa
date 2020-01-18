@@ -4,24 +4,14 @@ import { autorun } from 'meteor/cereal:reactive-render';
 import {FormikHelpers} from "formik";
 import { Meteor } from 'meteor/meteor';
 import {withSnackbar, WithSnackbarProps} from "notistack";
-import { withStyles, WithStyles, Theme, createStyles } from '@material-ui/core';
 import { AskFormValues, Form as AskForm } from '../components/question-ask/Form';
 import {StateStoreContext} from "/imports/ui/stores/state-store";
 import StyledPaper from "/imports/ui/components/material-ui/StyledPaper";
+import Section from "/imports/ui/components/Section";
 
-const styles = (theme: Theme) => createStyles({
-  formContainer: {
-    // background: "transparent",
-  },
-  root: {
-    display: "grid",
-    gridTemplateColumns: "7fr 3fr",
-    marginTop: theme.spacing(2)
-  }
-});
+export interface AskQuestionProps extends WithSnackbarProps {}
 
-export interface AskQuestionProps extends WithSnackbarProps, WithStyles<typeof styles> {}
-
+@autorun
 class AskComponent extends React.Component<AskQuestionProps> {
   static contextType = StateStoreContext;
 
@@ -43,16 +33,14 @@ class AskComponent extends React.Component<AskQuestionProps> {
   };
 
   public render() {
-    const { classes } = this.props;
-
     return(
-      <section className={classes.root}>
-        <StyledPaper elevation={0} className={classes.formContainer}>
+      <Section>
+        <StyledPaper elevation={0}>
           <AskForm submitHandler={(values: AskFormValues, form: FormikHelpers<AskFormValues>) => this.handleSubmit(values, form)} />
         </StyledPaper>
-      </section>
+      </Section>
     )
   }
 }
 
-export const Ask = withStyles(styles)(withSnackbar(autorun(AskComponent)));
+export const Ask = withSnackbar(AskComponent);

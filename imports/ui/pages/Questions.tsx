@@ -8,18 +8,14 @@ import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItem from "@material-ui/core/ListItem";
 import { Link } from 'react-router-dom';
-import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core';
 import {StateStoreContext} from "/imports/ui/stores/state-store";
 import StyledPaper from "/imports/ui/components/material-ui/StyledPaper";
+import Section from "/imports/ui/components/Section";
 
-const styles = (theme: Theme) => createStyles({
-  root: {
-    marginTop: theme.spacing(2)
-  }
-});
 
-export interface QuestionListProps extends WithStyles<typeof styles> {}
+export interface QuestionListProps {}
 
+@autorun
 class QuestionList extends React.Component<QuestionListProps> {
   static contextType = StateStoreContext;
 
@@ -35,10 +31,8 @@ class QuestionList extends React.Component<QuestionListProps> {
     }
 
     const questions = QuestionsModel.find({});
-    const { classes } = this.props;
-
     return(
-      <section className={classes.root}>
+      <Section>
         <StyledPaper>
           <section>
             <List>
@@ -53,9 +47,9 @@ class QuestionList extends React.Component<QuestionListProps> {
           </section>
         </StyledPaper>
 
-      </section>
+      </Section>
     );
   }
 }
 
-export const Questions = withStyles(styles)(autorun(QuestionList));
+export const Questions = QuestionList;
