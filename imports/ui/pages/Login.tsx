@@ -9,6 +9,7 @@ import { Form as LoginForm, LoginFormValues } from '../components/login/Form';
 import { FormikHelpers } from 'formik';
 import { Meteor } from 'meteor/meteor';
 import { Redirect } from 'react-router';
+import { Link } from 'react-router-dom';
 
 export interface LoginProps extends WithSnackbarProps, WithStyles<typeof authenticationStyles> {}
 
@@ -56,6 +57,9 @@ class LoginComponent extends React.Component<LoginProps, LoginState> {
           <Typography variant={"h2"}>Log In</Typography>
           <Typography variant={"h6"}>To your account!</Typography>
           <LoginForm submitHandler={(values: LoginFormValues, form: FormikHelpers<LoginFormValues>) => this.loginUser(values, form)} className={classes.form} />
+          <Typography variant={"body1"} className={classes.altMethod}>
+            Don't have an account yet? <Link to={"/register"}>Create one</Link> now!
+          </Typography>
         </section>
       </section>
     )

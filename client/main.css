@@ -1,2 +1,6 @@
-body {
+a {
+  color: #01A8D5;
+  font-weight: 500;
+  text-decoration: none;
+  letter-spacing: .2px;
 }

@@ -11,11 +11,15 @@ import { Link } from 'react-router-dom';
 import {StateStoreContext} from "/imports/ui/stores/state-store";
 import StyledPaper from "/imports/ui/components/material-ui/StyledPaper";
 import Section from "/imports/ui/components/Section";
+import { Theme, createStyles, withStyles, WithStyles, Typography } from '@material-ui/core';
+import { NoQuestions } from '../components/questions/NoQuestions';
 
+const styles = (theme: Theme) => createStyles({
+  
+});
 
-export interface QuestionListProps {}
+export interface QuestionListProps extends WithStyles<typeof styles> {}
 
-@autorun
 class QuestionList extends React.Component<QuestionListProps> {
   static contextType = StateStoreContext;
 
@@ -33,23 +37,24 @@ class QuestionList extends React.Component<QuestionListProps> {
     const questions = QuestionsModel.find({});
     return(
       <Section>
-        <StyledPaper>
-          <section>
-            <List>
-              {
-                questions.map(q => (
-                    <ListItem button component={Link} to={`/questions/${q._id}`} key={q._id}>
-                      <ListItemText primary={q.title}/>
-                    </ListItem>
-                ))
-              }
-            </List>
-          </section>
-        </StyledPaper>
-
+        {questions.count() === 0 ? (
+          <NoQuestions />
+        ) : (
+          <StyledPaper>
+            <section>
+              <List>
+                {questions.map(q => (
+                  <ListItem button component={Link} to={`/questions/${q._id}`} key={q._id}>
+                    <ListItemText primary={q.title}/>
+                  </ListItem>
+                ))}
+              </List>
+            </section>
+          </StyledPaper>
+        )}
       </Section>
     );
   }
 }
 
-export const Questions = QuestionList;
+export const Questions = withStyles(styles)(autorun(QuestionList));

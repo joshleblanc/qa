@@ -14,7 +14,19 @@ import Chip from "/node_modules/@material-ui/core/Chip";
 
 const styles = () => createStyles({
   root: {
-    minHeight: "40vh"
+    minHeight: "40vh",
+    display: "flex",
+    flexDirection: "column"
+  },
+  content: {
+    flexGrow: 1,
+    whiteSpace: "pre"
+  },
+  tag: {
+    margin: "0 .2rem",
+    "&:first-child": {
+      marginLeft: 0
+    }
   }
 });
 
@@ -43,9 +55,11 @@ class QuestionComponent extends React.Component<QuestionProps> {
     if (!question) {
       this.context.title = "Oopsie whoopsie";
       return (
-        <StyledPaper>
-          <Typography variant={"h5"}>Question not found!</Typography>
-        </StyledPaper>
+        <Section>
+          <StyledPaper>
+            <Typography variant={"h5"}>Question not found!</Typography>
+          </StyledPaper>
+        </Section>
       );
     }
     this.context.title = `Question: ${question.title}`;
@@ -55,20 +69,23 @@ class QuestionComponent extends React.Component<QuestionProps> {
     return (
       <Section>
         <StyledPaper className={classes.root}>
-          <Typography variant={"body2"}>
+          <Typography variant={"body2"} className={classes.content}>
             {question.details}
           </Typography>
-          {
-            tags.map((t: Tag) => {
-              return <Chip
-                key={t._id}
-                label={t.name}
-              />;
-            })
-          }
+          <Section>
+            {
+              tags.map((t: Tag) => {
+                return <Chip
+                  key={t._id}
+                  label={t.name}
+                  className={classes.tag}
+                />;
+              })
+            }
+          </Section>
           <Typography>
             Posted by:
-
+            {console.log(question)}
             {
               question.userId ? Meteor.users.findOne(question.userId)!.username : "System"
             }

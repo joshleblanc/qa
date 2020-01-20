@@ -6,6 +6,7 @@ import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswerTwoTone';
 import CreateIcon from '@material-ui/icons/CreateTwoTone';
 import ProfileIcon from '@material-ui/icons/AccountCircleTwoTone';
 import LogInIcon from '@material-ui/icons/LockOpenTwoTone';
+import TagsIcon from '@material-ui/icons/StyleTwoTone';
 import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
 import {Link, useHistory} from 'react-router-dom';
 import ToolbarPlaceholder from "/imports/ui/components/ToolbarPlaceholder";
@@ -87,6 +88,10 @@ export default function ResponsiveDrawer(props: ResponsiveDrawerProps) {
         <ListItem button component={Link} to={"/questions"}>
           <ListItemIcon><QuestionAnswerIcon /></ListItemIcon>
           <ListItemText primary={"Questions"} />
+        </ListItem>
+        <ListItem button component={Link} to={"/tags"}>
+          <ListItemIcon><TagsIcon /></ListItemIcon>
+          <ListItemText primary={"Tags"} />
         </ListItem>
       </List>
       <Divider />

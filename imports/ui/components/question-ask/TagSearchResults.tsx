@@ -19,7 +19,9 @@ const useStyles = makeStyles((theme:Theme) => {
   return createStyles({
     container: {
       display: 'flex',
-      alignItems: 'center'
+      alignItems: 'center',
+      padding: theme.spacing(1),
+      borderRadius: `0 0 ${theme.shape.borderRadius}px ${theme.shape.borderRadius}px`
     },
     button: {
       margin: theme.spacing(1)
@@ -37,11 +39,13 @@ const TagSearchResults:React.FunctionComponent<Props> = ({tags, query, onCreateT
   if(tags.count() === 0) {
     return(
       <Container>
-        <Typography>No Tags Found</Typography>
+        <Typography variant={"body2"}>No Tags Found</Typography>
         <StyledButton
           className={classes.button}
-          variant={"outlined"}
+          variant={"text"}
           onClick={onCreateTag}
+          color={"secondary"}
+          size={"small"}
         >
           Create {query}
         </StyledButton>
@@ -53,7 +57,14 @@ const TagSearchResults:React.FunctionComponent<Props> = ({tags, query, onCreateT
       {
         tags.map(t => {
           return(
-            <StyledButton key={t._id} className={classes.button} variant={"outlined"} onClick={() => onAddTag(t._id)}>
+            <StyledButton
+              size={"small"}
+              key={t._id}
+              color={"secondary"}
+              className={classes.button}
+              variant={"text"}
+              onClick={() => onAddTag(t._id)}
+            >
               {t.name}
             </StyledButton>
           )

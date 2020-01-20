@@ -9,6 +9,7 @@ import { Accounts } from 'meteor/accounts-base';
 import { FormikHelpers } from 'formik';
 import { AUTH_CLIP_PATH_STYLE } from '../stores/constants';
 import {RouterProps} from 'react-router';
+import { Link } from 'react-router-dom';
 
 export const authenticationStyles = (theme: Theme) => createStyles({
   root: {
@@ -35,6 +36,10 @@ export const authenticationStyles = (theme: Theme) => createStyles({
   },
   form: {
     marginTop: theme.spacing(5),
+    marginLeft: theme.spacing(3)
+  },
+  altMethod: {
+    marginTop: theme.spacing(2),
     marginLeft: theme.spacing(3)
   }
 });
@@ -69,7 +74,7 @@ class RegisterComponent extends React.Component<RegisterProps> {
     Accounts.createUser({
       email: values.email,
       password: values.password,
-      username: `User #${+Math.random().toFixed(5) * 100000}`
+      username: `User #${(Math.random() * 10000).toFixed(0)}`
     }, err => {
       if(err) {
         form.setSubmitting(false);
@@ -92,6 +97,9 @@ class RegisterComponent extends React.Component<RegisterProps> {
             submitHandler={(values: RegisterFormValues, form: FormikHelpers<RegisterFormValues>) => this.createUser(values, form)}
             className={classes.form}
           />
+          <Typography variant={"body1"} className={classes.altMethod}>
+            Have an account already? <Link to={"/login"}>Log in</Link> instead!
+          </Typography>
         </section>
       </section>
     )

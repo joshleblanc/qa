@@ -26,7 +26,8 @@ const useStyles = makeStyles({
     borderRadius: 4,
     textTransform: "capitalize",
     fontWeight: 300,
-    letterSpacing: .3
+    letterSpacing: .3,
+    marginTop: '.5rem'
   }
 });
 
@@ -53,7 +54,7 @@ export const Form: React.FunctionComponent<FormProps> = ({ submitHandler }): JSX
             label="Title"
             fullWidth
             margin="normal"
-            variant="outlined"
+            variant="filled"
             component={TextField}
             className={classes.titleField}
           />
@@ -72,8 +73,8 @@ export const Form: React.FunctionComponent<FormProps> = ({ submitHandler }): JSX
           <StyledButton
             color="primary"
             variant="contained"
-            size="large"
             type="submit"
+            size={"small"}
             loading={isSubmitting}
             className={classes.buttons}
             disabled={!isValid}

@@ -11,7 +11,7 @@ export interface Tag {
 
 export const TagSchema = yup.object().shape({
   name: yup.string().required(),
-  description: yup.string().min(6, "Password must be at least 6 characters").required(),
+  description: yup.string().min(6, "Description must be at least 6 characters").required(),
   related: yup.array().of(yup.string())
 });
 

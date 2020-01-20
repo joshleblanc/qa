@@ -8,7 +8,6 @@ import TagSearchResults from "/imports/ui/components/question-ask/TagSearchResul
 import Popper from "@material-ui/core/Popper";
 import {withSnackbar, WithSnackbarProps} from "notistack";
 import {searchTagsByName, Tags} from "/imports/api/models/tags";
-import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
 import {createStyles, Theme, WithStyles} from '@material-ui/core';
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -33,12 +32,14 @@ type Props = WithStyles<typeof styles> & WithSnackbarProps & FieldProps;
 
 @autorun
 class TagSelect extends React.Component<Props> {
-  anchorEl: HTMLDivElement | null = null;
-  state: State = {
+  private anchorEl: HTMLDivElement | null = null;
+  private inputRef?: HTMLInputElement = undefined;
+  public state: State = {
     value: ""
   };
 
-  handleChange: ChangeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
+
+  private handleChange: ChangeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
     this.setState({
       value: e.target.value
     });
@@ -54,6 +55,8 @@ class TagSelect extends React.Component<Props> {
     const { form, field } = this.props;
     this.setState({ value: "" });
     form.setFieldValue(field.name, [ ...form.values[field.name], id]);
+    // Set focus back to the tag input element
+    this.inputRef?.focus();
   };
 
   handleCreateTag = () => {
@@ -63,7 +66,7 @@ class TagSelect extends React.Component<Props> {
       if (err) {
         enqueueSnackbar(err.message, {variant: "error"});
       } else {
-        enqueueSnackbar("Tag Created", {variant: "success"});
+        enqueueSnackbar("Tag Created");
         this.addTag(res);
       }
     });
@@ -83,6 +86,10 @@ class TagSelect extends React.Component<Props> {
     return form.values[field.name];
   }
 
+  private setInputRef(ref: HTMLInputElement) {
+    this.inputRef = ref;
+  }
+
   render() {
     const { value } = this.state;
     const { classes } = this.props;
@@ -93,7 +100,6 @@ class TagSelect extends React.Component<Props> {
     const tags = searchTagsByName(value);
     return (
       <>
-        <Typography variant={"h5"}>Tags</Typography>
         <div>
           <TextField
             ref={this.handleRef}
@@ -102,6 +108,7 @@ class TagSelect extends React.Component<Props> {
             margin="dense"
             variant="outlined"
             value={value}
+            inputRef={(ref) => this.setInputRef(ref)}
             InputProps={{
               startAdornment: <div className={classes.adornment}>
                 {
@@ -110,6 +117,7 @@ class TagSelect extends React.Component<Props> {
                     if (tag) {
                       return <Chip
                         key={id}
+                        size={"small"}
                         label={tag.name}
                         onDelete={() => this.handleDelete(id)}
                         className={classes.chip}
