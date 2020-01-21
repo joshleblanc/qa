@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 const styles = makeStyles((theme: Theme) => ({
   root: {
-    height: `calc(100vh - 64px - ${ 2 * theme.spacing(2)}px)`
+    height: `calc(100vh - 64px - ${ 2 * theme.spacing(4)}px)`
   },
   hero: {
     display: "grid",

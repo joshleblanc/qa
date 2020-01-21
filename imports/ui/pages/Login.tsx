@@ -42,7 +42,7 @@ class LoginComponent extends React.Component<LoginProps, LoginState> {
         return;
       }
 
-      enqueueSnackbar("Logged in successfully!", { variant: "success"});
+      enqueueSnackbar("Logged in successfully!");
       this.setState({ redirectToHome: true });
     });
   }

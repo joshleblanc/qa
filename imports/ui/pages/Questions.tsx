@@ -11,11 +11,10 @@ import { Link } from 'react-router-dom';
 import {StateStoreContext} from "/imports/ui/stores/state-store";
 import StyledPaper from "/imports/ui/components/material-ui/StyledPaper";
 import Section from "/imports/ui/components/Section";
-import { Theme, createStyles, withStyles, WithStyles, Typography } from '@material-ui/core';
+import { Theme, createStyles, withStyles, WithStyles } from '@material-ui/core';
 import { NoQuestions } from '../components/questions/NoQuestions';
 
 const styles = (theme: Theme) => createStyles({
-  
 });
 
 export interface QuestionListProps extends WithStyles<typeof styles> {}

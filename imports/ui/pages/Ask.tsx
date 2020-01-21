@@ -43,15 +43,16 @@ class AskComponent extends React.Component<AskQuestionProps> {
 
   public render() {
     if(!Meteor.user()) {
-      return <SignupPrompt />
+      return <SignupPrompt />;
     }
+
     return(
       <Section>
         <StyledPaper elevation={0}>
           <AskForm submitHandler={(values: AskFormValues, form: FormikHelpers<AskFormValues>) => this.handleSubmit(values, form)} />
         </StyledPaper>
       </Section>
-    )
+    );
   }
 }
 
