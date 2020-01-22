@@ -44,13 +44,11 @@ export const UserCard: React.FunctionComponent<{}> = ({}: {}): JSX.Element|null 
   const user = useTracker(() =>  Meteor.user());
 
   if(!user) return (
-    <Grid xl={4} xs={12}>
-      <Skeleton variant={"rect"} height={70} width={"100%"} />
-    </Grid>
+    <Skeleton variant={"rect"} height={70} width={"100%"} />
   );
 
   return (
-    <Grid xl={4} xs={12}>
+    <>
       <StyledPaper>
         <Grid container spacing={2}>
           <Grid xl={2} xs={2}>
@@ -58,7 +56,7 @@ export const UserCard: React.FunctionComponent<{}> = ({}: {}): JSX.Element|null 
           </Grid>
           <Grid xl={10} xs={10}>
             <section>
-              <Typography className={classes.username} variant={"h5"}>
+              <Typography color={"textSecondary"} className={classes.username} variant={"h5"}>
                 {user.username}
               </Typography>
               {descriptionRender(user)}
@@ -66,6 +64,6 @@ export const UserCard: React.FunctionComponent<{}> = ({}: {}): JSX.Element|null 
           </Grid>
         </Grid>
       </StyledPaper>
-    </Grid>
+    </>
   );
 };

@@ -9,6 +9,8 @@ import { WithStyles, createStyles, Theme, withStyles, Grid } from '@material-ui/
 import { autorun } from 'meteor/cereal:reactive-render';
 import { Details } from '../components/profile/Details';
 import {StateStoreContext} from "/imports/ui/stores/state-store";
+import { ReputatonCard } from '../components/profile/ReputationCard';
+import { SocialConnections } from '../components/profile/SocialConnections';
 
 const styles = (theme: Theme) => createStyles({
   root: {
@@ -33,7 +35,13 @@ class CurrentProfileComponent extends React.Component<CurrentProfileProps> {
     return (
       <Section className={classes.root}>
         <Grid container justify={"center"} spacing={2}>
-          <UserCard />
+          <Grid xl={4} xs={12}>
+            <UserCard />
+            <br />
+            <ReputatonCard />
+            <br />
+            <SocialConnections />
+          </Grid>
           <Details />
         </Grid>
       </Section>
