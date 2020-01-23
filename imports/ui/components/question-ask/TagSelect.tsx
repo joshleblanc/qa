@@ -95,7 +95,7 @@ class TagSelect extends React.Component<Props> {
     const { classes } = this.props;
 
     Meteor.subscribe('tags.byIds', this.selected);
-    Meteor.subscribe('tags.search', value);
+    Meteor.subscribe('tags.search', value, 5);
 
     const tags = searchTagsByName(value);
     return (

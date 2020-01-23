@@ -15,11 +15,15 @@ export const TagSchema = yup.object().shape({
   related: yup.array().of(yup.string())
 });
 
-export const searchTagsByName = (query:string) => {
+export const searchTagsByName = (query:string, limit = undefined, skip = 0) => {
   return Tags.find({
     name: new RegExp(`^${query}`, "i")
   }, {
-    limit: 5
+    skip,
+    limit,
+    sort: {
+      usages: 1
+    }
   });
 };
 
