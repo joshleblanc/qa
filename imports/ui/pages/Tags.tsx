@@ -6,7 +6,7 @@ import StyledPaper from "/imports/ui/components/material-ui/StyledPaper";
 import Grid from "/node_modules/@material-ui/core/Grid";
 import {TextField} from "/node_modules/@material-ui/core";
 import {ChangeEventHandler} from "/node_modules/@types/react";
-import TagSearchResults from "/imports/ui/components/TagSearchResults";
+import TagSearchResults from "/imports/ui/components/tags/TagSearchResults";
 
 @autorun
 export default class Tags extends React.Component {

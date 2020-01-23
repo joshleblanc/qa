@@ -13,7 +13,7 @@ type Props = {
 }
 
 @autorun
-export default class TagSearchResults extends React.Component<Props> {
+export default class tagsTagSearchResults extends React.Component<Props> {
   render() {
     const { search } = this.props;
     Meteor.subscribe('tags.search', search, 36);
