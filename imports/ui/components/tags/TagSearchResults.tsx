@@ -27,7 +27,7 @@ export default class tagsTagSearchResults extends React.Component<Props> {
       <Grid container spacing={2}>
         {
           tags.map(t => (
-            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Grid item xs={12} sm={6} md={4} lg={3} key={t._id}>
               <StyledPaper>
                 <Typography variant={"caption"}><Chip label={t.name} /> x {t.usages}</Typography>
                 <Typography>
