@@ -14,7 +14,7 @@ type Props = {
 
 @autorun
 export default class tagsTagSearchResults extends React.Component<Props> {
-  render() {
+  public render() {
     const { search } = this.props;
     Meteor.subscribe('tags.search', search, 36);
 
@@ -23,6 +23,7 @@ export default class tagsTagSearchResults extends React.Component<Props> {
     // documents. So if you did limit: 36, skip: 36 on the client, you'd end up with no documents, because you skipped
     // all 36 of them that are in the client side db
     const tags = TagsModel.find({});
+
     return(
       <Grid container spacing={2}>
         {
