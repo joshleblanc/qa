@@ -5,7 +5,7 @@ import Section from "/imports/ui/components/Section";
 import Grid from "/node_modules/@material-ui/core/Grid";
 import {TextField} from "/node_modules/@material-ui/core";
 import {ChangeEventHandler} from "/node_modules/@types/react";
-import TagSearchResults from "/imports/ui/components/tags/TagSearchResults";
+import { TagSearchResults } from "/imports/ui/components/tags/TagSearchResults";
 
 @autorun
 export default class Tags extends React.Component {
