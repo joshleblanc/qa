@@ -33,9 +33,9 @@ class AskComponent extends React.Component<AskQuestionProps> {
         if(err) {
           enqueueSnackbar(err.error, { variant: "error" });
         } else {
-          enqueueSnackbar("Question created!", { variant: "success" });
+          enqueueSnackbar("Question created!");
           form.setSubmitting(false);
-          this.props.history.push(`/questions/${encodeURIComponent(questionId)}`)
+          this.props.history.push(`/questions/${encodeURIComponent(questionId)}`);
         }
       }
     );

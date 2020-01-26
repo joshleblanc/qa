@@ -1,8 +1,10 @@
 import * as React from 'react';
 //@ts-ignore
 import { autorun } from 'meteor/cereal:reactive-render';
-import { Grid, createStyles, Theme, WithStyles, withStyles } from '@material-ui/core';
+import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core';
 import StyledPaper from '../material-ui/StyledPaper';
+
+// TODO: Fix styles for the component, in mobiles
 
 const styles = (theme: Theme) => createStyles({
   root: {
@@ -17,12 +19,10 @@ class DetailsComponent extends React.Component<DetailsProps> {
   public render() {
     const { classes } = this.props;
     return (
-      <Grid xl={8} xs={8}>
-        <StyledPaper className={classes.root}>
-          Box
-        </StyledPaper>
-      </Grid>
-    )
+      <StyledPaper className={classes.root}>
+        Box
+      </StyledPaper>
+    );
   }
 }
 

@@ -6,6 +6,8 @@ import Grid from "/node_modules/@material-ui/core/Grid";
 import {TextField} from "/node_modules/@material-ui/core";
 import {ChangeEventHandler} from "/node_modules/@types/react";
 import { TagSearchResults } from "/imports/ui/components/tags/TagSearchResults";
+import { SortBySelector, SortBy } from '../components/tags/SortBySelector';
+import Grow from '../components/Grow';
 
 @autorun
 export default class Tags extends React.Component {
@@ -24,9 +26,12 @@ export default class Tags extends React.Component {
     return(
       <Section>
         <Grid container spacing={2}>
-          <Grid item xs={12}>
+          <Grid container alignItems={"center"}>
             <TextField label={"Search tags"} onChange={this.handleSearch} value={search} margin={"normal"} variant={"filled"}/>
+            <Grow />
+            <SortBySelector currentSortBy={SortBy.Name} />
           </Grid>
+          <br />
           <TagSearchResults search={search} />
         </Grid>
       </Section>

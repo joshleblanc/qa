@@ -11,6 +11,7 @@ import Section from "/imports/ui/components/Section";
 import {WithStyles, createStyles, withStyles} from '@material-ui/core';
 import {Tag, Tags} from "/imports/api/models/tags";
 import Chip from "/node_modules/@material-ui/core/Chip";
+import { UserCard } from '../components/profile/UserCard';
 
 const styles = () => createStyles({
   root: {
@@ -83,13 +84,7 @@ class QuestionComponent extends React.Component<QuestionProps> {
               })
             }
           </Section>
-          <Typography>
-            Posted by:
-            {console.log(question)}
-            {
-              question.userId ? Meteor.users.findOne(question.userId)!.username : "System"
-            }
-          </Typography>
+          <UserCard user={Meteor.users.findOne(question.userId)} />
         </StyledPaper>
       </Section>
     );

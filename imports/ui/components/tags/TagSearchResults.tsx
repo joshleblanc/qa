@@ -8,9 +8,9 @@ import StyledPaper from "/imports/ui/components/material-ui/StyledPaper";
 import Typography from "/node_modules/@material-ui/core/Typography";
 import Chip from "/node_modules/@material-ui/core/Chip";
 import { WithStyles, Theme, createStyles, withStyles, IconButton, TextField } from '@material-ui/core';
-import { mutateUser } from '/imports/api/methods/extended_user';
 import EditIcon from "@material-ui/icons/EditTwoTone";
 import CloseIcon from "@material-ui/icons/CloseTwoTone";
+import { isAdmin, mutateUser } from '/imports/api/methods/extended_user';
 
 const styles = (theme: Theme) => createStyles({
   button: {
@@ -25,6 +25,14 @@ const styles = (theme: Theme) => createStyles({
   },
   textField: {
     marginTop: 5
+  },
+  tagDesc: {
+    margin: '5px 0',
+    height: theme.spacing(8),
+    overflow: 'hidden'
+  },
+  usage: {
+    paddingLeft: theme.spacing(1)
   }
 });
 
@@ -47,6 +55,12 @@ class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, T
     });
   }
 
+  static formatDescription(description: string): string {
+    if(description.length === 0) return "No description set yet.";
+
+    return description;
+  }
+
   private updateTagDescription_visual(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>): void {
     event.persist();
 
@@ -65,9 +79,59 @@ class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, T
     });
   }
 
+  private checkForSubmission(ev: React.KeyboardEvent<HTMLDivElement>): void {
+    ev.persist();
+
+    if(ev.keyCode === 13) {
+      // Enter key is pressed
+      if(!this.state.editingContext) return;
+      ev.preventDefault();
+
+      const updatedTag: Tag = this.state.editingContext;
+
+      // *shrug* smh typescript
+      if(!updatedTag._id) return;
+
+      TagsModel.update(updatedTag._id, {
+        $set: {
+          description: updatedTag.description,
+          name: updatedTag.name,
+          related: updatedTag.related,
+          usages: updatedTag.usages
+        }
+      }, {}, () => this.setState({ editingContext: undefined }));
+    }
+  }
+
+  private editingView(tag: Tag): React.ReactNode {
+    return (
+      <Grid item xs={12} sm={6} md={4} lg={3} key={tag._id}>
+        <StyledPaper className={this.props.classes.root}>
+          <IconButton size={"small"} className={this.props.classes.button}>
+            <CloseIcon />
+          </IconButton>
+          <Typography variant={"h6"}>Editing <Chip label={tag.name} /></Typography>
+          <TextField
+            variant={"standard"}
+            size={"small"}
+            label={"Tag Description"}
+            value={this.state.editingContext?.description}
+            onChange={(ev) => this.updateTagDescription_visual(ev)}
+            fullWidth
+            autoFocus
+            multiline
+            rows={3}
+            className={this.props.classes.textField}
+            onKeyDown={(ev) => this.checkForSubmission(ev)}
+          />
+        </StyledPaper>
+      </Grid>
+    );
+  }
+
   public render() {
     const { search } = this.props;
-    Meteor.subscribe('tags.search', search, 36);
+    Meteor.subscribe('tags.search', search, 16);
 
     // The publication is limiting it to 36 documents. We can't duplicate that on the frontend
     // because we're only operating on what's returned from the server. Eg, limit: 36, skip: 36 would only return 36
@@ -81,44 +145,27 @@ class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, T
         {
           tags.map((tag: Tag) => {
             if(this.state.editingContext?._id === tag._id) {
-              return (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={tag._id}>
-                  <StyledPaper className={this.props.classes.root}>
-                    <IconButton size={"small"} className={this.props.classes.button}>
-                      <CloseIcon />
-                    </IconButton>
-                    <Typography variant={"h6"}>Editing <Chip label={tag.name} /></Typography>
-                    <TextField
-                      variant={"standard"}
-                      size={"small"}
-                      label={"Tag Description"}
-                      value={this.state.editingContext?.description}
-                      onChange={(ev) => this.updateTagDescription_visual(ev)}
-                      fullWidth
-                      autoFocus
-                      className={this.props.classes.textField}
-                    />
-                  </StyledPaper>
-                </Grid>
-              )
+              return this.editingView(tag);
             }
 
             return (
               <Grid item xs={12} sm={6} md={4} lg={3} key={tag._id}>
                 <StyledPaper className={this.props.classes.root}>
-                  <Typography variant={"caption"}><Chip label={tag.name} /> x {tag.usages}</Typography>
-                  <Typography variant={"body1"}>
-                    {tag.description}
-                    {mutateUser(Meteor.user()) && (
-                      <>
-                        <br />
-                        <IconButton className={this.props.classes.button} size={"small"} onClick={() => this.editTag(tag)}>
-                          <EditIcon />
-                        </IconButton>
-                      </>
-                    )}
+                  {isAdmin(Meteor.user()) && (
+                    <IconButton className={this.props.classes.button} size={"small"} onClick={() => this.editTag(tag)}>
+                      <EditIcon />
+                    </IconButton>
+                  )}
+                  <Typography variant={"caption"} color={"textSecondary"}>
+                    <Chip label={tag.name} />
+                    <span className={this.props.classes.usage}>
+                      x {tag.usages}
+                    </span>
                   </Typography>
-                  <Typography variant={"caption"}>0 asked today, 0 asked this week</Typography>
+                  <Typography variant={"body2"} className={this.props.classes.tagDesc}>
+                    {TagSearchResultsComponent.formatDescription(tag.description)}
+                  </Typography>
+                  <Typography color={"textSecondary"} variant={"caption"}>0 asked today, 0 asked this week</Typography>
                 </StyledPaper>
               </Grid>
             );

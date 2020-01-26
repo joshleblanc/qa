@@ -36,13 +36,15 @@ class CurrentProfileComponent extends React.Component<CurrentProfileProps> {
       <Section className={classes.root}>
         <Grid container justify={"center"} spacing={2}>
           <Grid xl={4} xs={12}>
-            <UserCard />
+            <UserCard editable />
             <br />
             <ReputatonCard />
             <br />
             <SocialConnections />
           </Grid>
-          <Details />
+          <Grid xl={8} xs={12}>
+            <Details />
+          </Grid>
         </Grid>
       </Section>
     );
