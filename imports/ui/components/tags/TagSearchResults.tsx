@@ -13,7 +13,7 @@ import CloseIcon from "@material-ui/icons/CloseTwoTone";
 import CheckIcon from "@material-ui/icons/Done";
 import {isAdmin} from '/imports/api/methods/extended_user';
 import {SortBy} from "/imports/ui/components/tags/SortBySelector";
-import {green} from "/node_modules/@material-ui/core/colors";
+import {grey} from "/node_modules/@material-ui/core/colors";
 
 const styles = (theme: Theme) => createStyles({
   buttons: {
@@ -27,7 +27,7 @@ const styles = (theme: Theme) => createStyles({
     transition: '100ms all ease',
   },
   saving: {
-    color: green[500],
+    color: grey[500],
     position: 'absolute',
     top: 0,
     left: 0,
