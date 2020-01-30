@@ -11,15 +11,9 @@ import { Link } from 'react-router-dom';
 import {StateStoreContext} from "/imports/ui/stores/state-store";
 import StyledPaper from "/imports/ui/components/material-ui/StyledPaper";
 import Section from "/imports/ui/components/Section";
-import { Theme, createStyles, withStyles, WithStyles } from '@material-ui/core';
 import { NoQuestions } from '../components/questions/NoQuestions';
 
-const styles = (theme: Theme) => createStyles({
-});
-
-export interface QuestionListProps extends WithStyles<typeof styles> {}
-
-class QuestionList extends React.Component<QuestionListProps> {
+class QuestionList extends React.Component {
   static contextType = StateStoreContext;
 
   componentDidMount() {
@@ -33,7 +27,11 @@ class QuestionList extends React.Component<QuestionListProps> {
       return <LinearProgress />
     }
 
-    const questions = QuestionsModel.find({});
+    const questions = QuestionsModel.find({}, {
+      sort: {
+        createdAt: -1
+      }
+    });
     return(
       <Section>
         {questions.count() === 0 ? (
@@ -56,4 +54,4 @@ class QuestionList extends React.Component<QuestionListProps> {
   }
 }
 
-export const Questions = withStyles(styles)(autorun(QuestionList));
+export const Questions = autorun(QuestionList);
