@@ -16,7 +16,7 @@ Meteor.startup(() => {
   Migrations.migrateTo('latest');
 });
 
-Accounts.onCreateUser((options, user: ExtendedUser) => {
+Accounts.onCreateUser((_, user: ExtendedUser) => {
   user.admin = false;
 
   return user;
