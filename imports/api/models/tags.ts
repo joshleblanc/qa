@@ -29,7 +29,7 @@ export const searchTagsSort = (sortBy:SortBy) => {
     }
   } else {
     return {
-      usages: 1
+      usages: -1
     }
   }
 };
