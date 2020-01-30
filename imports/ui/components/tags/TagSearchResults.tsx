@@ -7,12 +7,13 @@ import Grid from "/node_modules/@material-ui/core/Grid";
 import StyledPaper from "/imports/ui/components/material-ui/StyledPaper";
 import Typography from "/node_modules/@material-ui/core/Typography";
 import Chip from "/node_modules/@material-ui/core/Chip";
-import {createStyles, IconButton, TextField, Theme, WithStyles, withStyles} from '@material-ui/core';
+import {CircularProgress, createStyles, IconButton, TextField, Theme, WithStyles, withStyles} from '@material-ui/core';
 import EditIcon from "@material-ui/icons/EditTwoTone";
 import CloseIcon from "@material-ui/icons/CloseTwoTone";
 import CheckIcon from "@material-ui/icons/Done";
 import {isAdmin} from '/imports/api/methods/extended_user';
 import {SortBy} from "/imports/ui/components/tags/SortBySelector";
+import {green} from "/node_modules/@material-ui/core/colors";
 
 const styles = (theme: Theme) => createStyles({
   buttons: {
@@ -24,6 +25,16 @@ const styles = (theme: Theme) => createStyles({
     padding: theme.spacing(1),
     opacity: 1,
     transition: '100ms all ease',
+  },
+  saving: {
+    color: green[500],
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 1,
+  },
+  wrapper: {
+    position: 'relative',
   },
   root: {
     position: 'relative',
@@ -43,16 +54,18 @@ const styles = (theme: Theme) => createStyles({
 
 export interface TagSearchResultsProps extends WithStyles<typeof styles> {
   search: string,
-  sort: SortBy
+  sort: SortBy,
 }
 
 export interface TagSearchResultsState {
   editingContext?: Tag;
+  saving: boolean;
 }
 
 class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, TagSearchResultsState> {
   public state: TagSearchResultsState = {
-    editingContext: undefined
+    editingContext: undefined,
+    saving: false
   };
 
   private editTag(tag: Tag): void {
@@ -68,7 +81,7 @@ class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, T
   }
 
   private closeEdit = () => {
-    this.setState({editingContext: undefined})
+    this.setState({editingContext: undefined, saving: false})
   };
 
   private updateTagDescriptionVisual(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void {
@@ -93,6 +106,7 @@ class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, T
     const {editingContext} = this.state;
     if (!editingContext) return;
 
+    this.setState({ saving: true });
     Meteor.call('tags.update', editingContext, this.closeEdit);
   };
 
@@ -109,6 +123,7 @@ class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, T
 
   private editingView(tag: Tag): React.ReactNode {
     const {classes} = this.props;
+    const { saving } = this.state;
     return (
       <Grid item xs={12} sm={6} md={4} lg={3} key={tag._id}>
         <StyledPaper className={this.props.classes.root}>
@@ -117,9 +132,13 @@ class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, T
               <Typography variant={"h6"}>Editing <Chip label={tag.name}/></Typography>
             </Grid>
             <Grid item xs={4} className={classes.buttons}>
-              <IconButton size={"small"} className={classes.button} onClick={this.saveTag}>
-                <CheckIcon/>
-              </IconButton>
+              <div className={classes.wrapper}>
+                <IconButton size={"small"} className={classes.button} onClick={this.saveTag}>
+                  <CheckIcon/>
+                </IconButton>
+                {saving && <CircularProgress size={36} className={classes.saving} />}
+              </div>
+
               <IconButton size={"small"} className={classes.button} onClick={this.closeEdit}>
                 <CloseIcon/>
               </IconButton>
