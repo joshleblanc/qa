@@ -5,11 +5,11 @@ import {createStyles, Theme, WithStyles, withStyles} from "@material-ui/core";
 import {WithSnackbarProps, withSnackbar} from "notistack";
 import Typography from "@material-ui/core/Typography";
 import { Form as RegisterForm, RegisterFormValues } from "../components/register/Form";
-import { Accounts } from 'meteor/accounts-base';
 import { FormikHelpers } from 'formik';
 import { AUTH_CLIP_PATH_STYLE } from '../stores/constants';
 import {RouterProps} from 'react-router';
 import { Link } from 'react-router-dom';
+import { Meteor } from 'meteor/meteor';
 
 export const authenticationStyles = (theme: Theme) => createStyles({
   root: {
@@ -70,12 +70,8 @@ class RegisterComponent extends React.Component<RegisterProps> {
       enqueueSnackbar("You have to accept out terms and agreements before proceeding!", { variant: "error" });
       return;
     }
-    
-    Accounts.createUser({
-      email: values.email,
-      password: values.password,
-      username: `User #${(Math.random() * 10000).toFixed(0)}`
-    }, err => {
+
+    Meteor.call("user.create", values.email, values.password, (err:Meteor.Error) => {
       if(err) {
         form.setSubmitting(false);
         enqueueSnackbar(`Error while signing up: ${err.message}`, { variant: "error" });
