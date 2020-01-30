@@ -12,6 +12,7 @@ import Chip from "@material-ui/core/Chip";
 import {createStyles, Theme, WithStyles} from '@material-ui/core';
 import withStyles from "@material-ui/core/styles/withStyles";
 import {FieldProps} from "formik";
+import {SortBy} from "/imports/ui/components/tags/SortBySelector";
 
 type State = {
   value: string,
@@ -97,7 +98,7 @@ class TagSelect extends React.Component<Props> {
     Meteor.subscribe('tags.byIds', this.selected);
     Meteor.subscribe('tags.search', value, 5);
 
-    const tags = searchTagsByName(value);
+    const tags = searchTagsByName(value, SortBy.Usages);
     return (
       <>
         <div>
