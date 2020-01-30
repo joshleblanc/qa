@@ -35,13 +35,13 @@ class QuestionList extends React.Component<QuestionListProps> {
   }
 
   public render() {
-    // const loading = !Meteor.subscribe('questions').ready();
+    const loading = !Meteor.subscribe('questions').ready();
     
     const { classes } = this.props;
 
-    // if(loading) {
-    //   return <LinearProgress />
-    // }
+    if(loading) {
+      return <LinearProgress />
+    }
 
     const questions = QuestionsModel.find({}, {
       sort: {
@@ -74,4 +74,4 @@ class QuestionList extends React.Component<QuestionListProps> {
   }
 }
 
-export const Questions = autorun(QuestionList);
+export const Questions = withStyles(styles)(autorun(QuestionList));
