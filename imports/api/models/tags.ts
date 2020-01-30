@@ -20,7 +20,7 @@ export const TagSchema = yup.object().shape({
   related: yup.array().of(yup.string())
 });
 
-export const searchTagsByName = (query:string, sortBy:SortBy, limit = undefined, skip = 0) => {
+export const searchTagsByName = (query:string, sortBy:SortBy, limit = 0, skip = 0) => {
   let sort;
 
   if(sortBy === SortBy.Name) {
