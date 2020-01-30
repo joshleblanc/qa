@@ -12,7 +12,8 @@ import Grow from '../components/Grow';
 @autorun
 export default class Tags extends React.Component {
   public state = {
-    search: ""
+    search: "",
+    sort: SortBy.Usages
   };
   
   private handleSearch: ChangeEventHandler<HTMLInputElement> = e => {
@@ -22,17 +23,17 @@ export default class Tags extends React.Component {
   };
 
   public render() {
-    const { search } = this.state;
+    const { search, sort } = this.state;
     return(
       <Section>
         <Grid container spacing={2}>
           <Grid container alignItems={"center"}>
             <TextField label={"Search tags"} onChange={this.handleSearch} value={search} margin={"normal"} variant={"filled"}/>
             <Grow />
-            <SortBySelector currentSortBy={SortBy.Name} />
+            <SortBySelector currentSortBy={sort} onSelect={i => this.setState({ sort: i })} />
           </Grid>
           <br />
-          <TagSearchResults search={search} />
+          <TagSearchResults search={search} sort={sort} />
         </Grid>
       </Section>
     )

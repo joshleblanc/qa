@@ -10,7 +10,8 @@ import Chip from "/node_modules/@material-ui/core/Chip";
 import { WithStyles, Theme, createStyles, withStyles, IconButton, TextField } from '@material-ui/core';
 import EditIcon from "@material-ui/icons/EditTwoTone";
 import CloseIcon from "@material-ui/icons/CloseTwoTone";
-import { isAdmin, mutateUser } from '/imports/api/methods/extended_user';
+import { isAdmin } from '/imports/api/methods/extended_user';
+import {SortBy} from "/imports/ui/components/tags/SortBySelector";
 
 const styles = (theme: Theme) => createStyles({
   button: {
@@ -37,7 +38,8 @@ const styles = (theme: Theme) => createStyles({
 });
 
 export interface TagSearchResultsProps extends WithStyles<typeof styles> {
-  search:string
+  search: string,
+  sort: SortBy
 }
 
 export interface TagSearchResultsState {
@@ -130,8 +132,8 @@ class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, T
   }
 
   public render() {
-    const { search } = this.props;
-    Meteor.subscribe('tags.search', search, 16);
+    const { search, sort } = this.props;
+    Meteor.subscribe('tags.search', search, sort, 16);
 
     // The publication is limiting it to 36 documents. We can't duplicate that on the frontend
     // because we're only operating on what's returned from the server. Eg, limit: 36, skip: 36 would only return 36

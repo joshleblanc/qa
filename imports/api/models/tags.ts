@@ -2,13 +2,16 @@ import yup from 'yup';
 import {Mongo} from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 import { isAdmin } from '../methods/extended_user';
+import {SortBy} from "/imports/ui/components/tags/SortBySelector";
 
 export interface Tag {
   _id?: string;
   name: string;
   description: string;
   usages: number;
-  related: string[]
+  related: string[],
+  createdAt: Date,
+  updatedAt: Date
 }
 
 export const TagSchema = yup.object().shape({
@@ -17,15 +20,29 @@ export const TagSchema = yup.object().shape({
   related: yup.array().of(yup.string())
 });
 
-export const searchTagsByName = (query:string, limit = undefined, skip = 0) => {
+export const searchTagsByName = (query:string, sortBy:SortBy, limit = undefined, skip = 0) => {
+  let sort;
+
+  if(sortBy === SortBy.Name) {
+    sort = {
+      name: 1
+    }
+  } else if(sortBy === SortBy["Date Added"]) {
+    sort = {
+      createdAt: 1
+    }
+  } else {
+    sort = {
+      usages: 1
+    }
+  }
+
   return Tags.find({
     name: new RegExp(`^${query}`, "i")
   }, {
     skip,
     limit,
-    sort: {
-      usages: 1
-    }
+    sort
   });
 };
 
