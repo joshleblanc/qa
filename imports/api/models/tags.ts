@@ -20,22 +20,24 @@ export const TagSchema = yup.object().shape({
   related: yup.array().of(yup.string())
 });
 
-export const searchTagsByName = (query:string, sortBy:SortBy, limit = 0, skip = 0) => {
-  let sort;
-
+export const searchTagsSort = (sortBy:SortBy) => {
   if(sortBy === SortBy.Name) {
-    sort = {
+    return {
       name: 1
     }
   } else if(sortBy === SortBy["Date Added"]) {
-    sort = {
+    return {
       createdAt: 1
     }
   } else {
-    sort = {
+    return {
       usages: 1
     }
   }
+};
+
+export const searchTagsByName = (query:string, sortBy:SortBy, limit = 0, skip = 0) => {
+  let sort = searchTagsSort(sortBy);
 
   return Tags.find({
     name: new RegExp(`^${query}`, "i")

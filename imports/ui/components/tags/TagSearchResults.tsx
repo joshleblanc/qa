@@ -2,7 +2,7 @@ import React from 'react';
 // @ts-ignore
 import {autorun} from 'meteor/cereal:reactive-render';
 import {Meteor} from "meteor/meteor";
-import {Tag, Tags as TagsModel} from "/imports/api/models/tags";
+import {searchTagsSort, Tag, Tags as TagsModel} from "/imports/api/models/tags";
 import Grid from "/node_modules/@material-ui/core/Grid";
 import StyledPaper from "/imports/ui/components/material-ui/StyledPaper";
 import Typography from "/node_modules/@material-ui/core/Typography";
@@ -172,7 +172,11 @@ class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, T
     // documents. So if you did limit: 36, skip: 36 on the client, you'd end up with no documents, because you skipped
     // all 36 of them that are in the client side db
 
-    const tags = TagsModel.find({});
+    const tags = TagsModel.find({
+      name: new RegExp(`^${search}`, "i")
+    }, {
+      sort: searchTagsSort(sort)
+    });
 
     return (
       <Grid container spacing={2}>
