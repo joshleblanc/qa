@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 // @ts-ignore
 import { Migrations } from 'meteor/percolate:migrations';
 
+import '/imports/api/methods/user_methods';
 import '/imports/api/methods/question_methods';
 import '/imports/api/publications/question_publications';
 import '/imports/api/publications/tag_publications';
@@ -15,7 +16,7 @@ Meteor.startup(() => {
   Migrations.migrateTo('latest');
 });
 
-Accounts.onCreateUser((options, user: ExtendedUser) => {
+Accounts.onCreateUser((_, user: ExtendedUser) => {
   user.admin = false;
 
   return user;
