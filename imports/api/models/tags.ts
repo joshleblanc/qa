@@ -1,7 +1,5 @@
 import yup from 'yup';
 import {Mongo} from 'meteor/mongo';
-import { Meteor } from 'meteor/meteor';
-import {isAdmin} from '../methods/extended_user';
 import {SortBy} from "/imports/ui/components/tags/SortBySelector";
 
 export interface Tag {
@@ -49,22 +47,3 @@ export const searchTagsByName = (query:string, sortBy:SortBy, limit = 0, skip = 
 };
 
 export const Tags = new Mongo.Collection<Tag>('tags');
-
-Meteor.methods({
-  "tags.update"(newTag:Tag) {
-    if(!isAdmin(Meteor.user())) {
-      throw new Meteor.Error("Not Authorized");
-    }
-    Tags.update({
-      _id: newTag._id
-    }, {
-      $set: {
-        description: newTag.description,
-        name: newTag.name,
-        related: newTag.related,
-        usages: newTag.usages,
-        updatedAt: new Date()
-      }
-    })
-  }
-});
