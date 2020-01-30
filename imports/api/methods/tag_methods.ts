@@ -15,7 +15,9 @@ Meteor.methods({
       name,
       description: "",
       usages: 0,
-      related: []
+      related: [],
+      createdAt: new Date(),
+      updatedAt: new Date()
     });
   }
 });
