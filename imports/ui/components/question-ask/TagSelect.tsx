@@ -93,7 +93,7 @@ class TagSelect extends React.Component<Props> {
 
   render() {
     const { value } = this.state;
-    const { classes } = this.props;
+    const { classes, form } = this.props;
 
     Meteor.subscribe('tags.byIds', this.selected);
     Meteor.subscribe('tags.search', value, 5);
@@ -110,6 +110,8 @@ class TagSelect extends React.Component<Props> {
             variant="outlined"
             value={value}
             inputRef={(ref) => this.setInputRef(ref)}
+            helperText={form.errors['tagIds']}
+            error={Boolean(form.errors['tagIds'])}
             InputProps={{
               startAdornment: <div className={classes.adornment}>
                 {
@@ -126,7 +128,6 @@ class TagSelect extends React.Component<Props> {
                     } else {
                       return null;
                     }
-
                   })
                 }
               </div>
