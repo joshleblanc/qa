@@ -78,6 +78,7 @@ class RegisterComponent extends React.Component<RegisterProps> {
         return;
       }
       enqueueSnackbar("Signed up!", { variant: "success" });
+      Meteor.loginWithPassword(values.email, values.password);
       this.props.history.push("/");
     });
   }
