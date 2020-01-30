@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { makeStyles, Avatar, Typography, Button } from '@material-ui/core';
+import { makeStyles, Avatar, Typography, Button, PaperProps } from '@material-ui/core';
 import StyledPaper from '../material-ui/StyledPaper';
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
@@ -50,12 +50,13 @@ function descriptionRender(user: Meteor.User, editable?: boolean): JSX.Element {
   );
 }
 
-export interface UserCardProps {
+export interface UserCardProps extends PaperProps {
   user?: Meteor.User|null;
   editable?: boolean;
+  className?: string;
 }
 
-export const UserCard: React.FunctionComponent<UserCardProps> = ({ user, editable }: UserCardProps): JSX.Element|null => {
+export const UserCard: React.FunctionComponent<UserCardProps> = ({ user, editable, className, ...otherProps }: UserCardProps): JSX.Element|null => {
   const classes = styles();
   const computationUser = useTracker(() =>  user || Meteor.user());
 
@@ -64,16 +65,14 @@ export const UserCard: React.FunctionComponent<UserCardProps> = ({ user, editabl
   );
 
   return (
-    <>
-      <StyledPaper className={classes.root}>
-          <Avatar className={classes.avatar} variant={"circle"} color={"primary"} src={"/resources/illustrations/avatar-male_undraw.svg"} />
-          <section className={classes.content}>
-            <Typography color={"textSecondary"} className={classes.username} variant={"h5"}>
-              {computationUser.username}
-            </Typography>
-            {descriptionRender(computationUser, editable)}
-          </section>
-      </StyledPaper>
-    </>
+    <StyledPaper className={`${classes.root} ${className}`} {...otherProps}>
+        <Avatar className={classes.avatar} variant={"circle"} color={"primary"} src={"/resources/illustrations/avatar-male_undraw.svg"} />
+        <section className={classes.content}>
+          <Typography color={"textSecondary"} className={classes.username} variant={"h5"}>
+            {computationUser.username}
+          </Typography>
+          {descriptionRender(computationUser, editable)}
+        </section>
+    </StyledPaper>
   );
 };

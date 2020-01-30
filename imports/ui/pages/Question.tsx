@@ -8,12 +8,13 @@ import Typography from "@material-ui/core/Typography";
 import {Meteor} from 'meteor/meteor';
 import {StateStoreContext} from "/imports/ui/stores/state-store";
 import Section from "/imports/ui/components/Section";
-import {WithStyles, createStyles, withStyles} from '@material-ui/core';
+import {WithStyles, createStyles, withStyles, Theme} from '@material-ui/core';
 import {Tag, Tags} from "/imports/api/models/tags";
 import Chip from "/node_modules/@material-ui/core/Chip";
 import { UserCard } from '../components/profile/UserCard';
+import Grow from '../components/Grow';
 
-const styles = () => createStyles({
+const styles = (theme: Theme) => createStyles({
   root: {
     minHeight: "40vh",
     display: "flex",
@@ -28,6 +29,16 @@ const styles = () => createStyles({
     "&:first-child": {
       marginLeft: 0
     }
+  },
+  tags: {
+  },
+  details: {
+    display: "flex",
+    alignItems: "flex-end"
+  },
+  userCard: {
+    width: "30%",
+    background: theme.palette.type === "dark" ? "rgba(0,0,0,.2)" : "rgba(0,0,0,.1)"
   }
 });
 
@@ -63,6 +74,7 @@ class QuestionComponent extends React.Component<QuestionProps> {
         </Section>
       );
     }
+
     this.context.title = `Question: ${question.title}`;
     const tags = Tags.find({_id: {$in: question.tagIds}});
     const {classes} = this.props;
@@ -70,21 +82,24 @@ class QuestionComponent extends React.Component<QuestionProps> {
     return (
       <Section>
         <StyledPaper className={classes.root}>
-          <Typography variant={"body2"} className={classes.content}>
+          <Typography variant={"body1"} className={classes.content}>
             {question.details}
           </Typography>
-          <Section>
-            {
-              tags.map((t: Tag) => {
-                return <Chip
-                  key={t._id}
-                  label={t.name}
-                  className={classes.tag}
-                />;
-              })
-            }
+          <Section className={classes.details}>
+            <section className={classes.tags}>
+              {
+                tags.map((t: Tag) => {
+                  return <Chip
+                    key={t._id}
+                    label={t.name}
+                    className={classes.tag}
+                  />;
+                })
+              }
+            </section>
+            <Grow />
+            <UserCard elevation={0} className={classes.userCard} user={Meteor.users.findOne(question.userId)} />
           </Section>
-          <UserCard user={Meteor.users.findOne(question.userId)} />
         </StyledPaper>
       </Section>
     );

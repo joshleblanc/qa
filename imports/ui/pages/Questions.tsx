@@ -3,18 +3,22 @@ import React from 'react';
 import { autorun } from 'meteor/cereal:reactive-render';
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { Meteor } from 'meteor/meteor';
-import { Questions as QuestionsModel } from '/imports/api/models/questions';
-import List from "@material-ui/core/List";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItem from "@material-ui/core/ListItem";
+import { Questions as QuestionsModel, Question } from '/imports/api/models/questions';
 import { Link } from 'react-router-dom';
 import {StateStoreContext} from "/imports/ui/stores/state-store";
 import StyledPaper from "/imports/ui/components/material-ui/StyledPaper";
 import Section from "/imports/ui/components/Section";
-import { Theme, createStyles, withStyles, WithStyles } from '@material-ui/core';
+import { Theme, createStyles, withStyles, WithStyles, Typography } from '@material-ui/core';
 import { NoQuestions } from '../components/questions/NoQuestions';
 
 const styles = (theme: Theme) => createStyles({
+  question: {
+    margin: `${theme.spacing(1)}px 0`,
+    padding: `${theme.spacing(1)}px ${theme.spacing(2) + 4}px`
+  },
+  questionContent: {
+    margin: `${theme.spacing(1)}px 0`
+  }
 });
 
 export interface QuestionListProps extends WithStyles<typeof styles> {}
@@ -22,16 +26,22 @@ export interface QuestionListProps extends WithStyles<typeof styles> {}
 class QuestionList extends React.Component<QuestionListProps> {
   static contextType = StateStoreContext;
 
-  componentDidMount() {
+  public componentDidMount(): void {
     this.context.title = "Recent Questions";
   }
 
-  public render() {
-    const loading = !Meteor.subscribe('questions').ready();
+  private compareQuestions(a: Question, b: Question): number {
+    return a.createdAt.getTime() - b.createdAt.getTime();
+  }
 
-    if(loading) {
-      return <LinearProgress />
-    }
+  public render() {
+    // const loading = !Meteor.subscribe('questions').ready();
+    
+    const { classes } = this.props;
+
+    // if(loading) {
+    //   return <LinearProgress />
+    // }
 
     const questions = QuestionsModel.find({});
     return(
@@ -39,17 +49,21 @@ class QuestionList extends React.Component<QuestionListProps> {
         {questions.count() === 0 ? (
           <NoQuestions />
         ) : (
-          <StyledPaper>
-            <section>
-              <List>
-                {questions.map(q => (
-                  <ListItem button component={Link} to={`/questions/${q._id}`} key={q._id}>
-                    <ListItemText primary={q.title}/>
-                  </ListItem>
-                ))}
-              </List>
-            </section>
-          </StyledPaper>
+          questions.fetch().sort((a, b) => this.compareQuestions(a, b)).map((question: Question) => (
+            <Link to={`/questions/${question._id}`}>
+              <StyledPaper className={classes.question}>
+                <Typography variant={"h5"}>{question.title}</Typography>
+                <Typography variant={"body2"} className={classes.questionContent} color={"textSecondary"}>
+                  {question.details.substr(0, 60)}
+                </Typography>
+                <Typography variant={"caption"} color={"textSecondary"}>
+                  Asked by <b>{Meteor.users.find({ _id: question.userId }).fetch()[0]?.username}</b>{/*  */}
+                  <br />
+                  On {question.createdAt.toLocaleString()}
+                </Typography>
+              </StyledPaper>
+            </Link>
+          ))
         )}
       </Section>
     );
