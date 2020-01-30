@@ -1,7 +1,7 @@
 import yup from 'yup';
 import {Mongo} from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
-import { isAdmin } from '../methods/extended_user';
+import {isAdmin} from '../methods/extended_user';
 import {SortBy} from "/imports/ui/components/tags/SortBySelector";
 
 export interface Tag {
@@ -48,19 +48,20 @@ export const searchTagsByName = (query:string, sortBy:SortBy, limit = undefined,
 
 export const Tags = new Mongo.Collection<Tag>('tags');
 
-Tags.allow({
-  insert: (userId: string): boolean => {
-    // Selects the first user resulting from the search
-    // And in a normal world there should be one result being returned as well.
-    const user = Meteor.users.find({ _id: userId }).fetch()[0];
-    return isAdmin(user);
-  },
-  update: (userId: string): boolean => {
-    const user = Meteor.users.find({ _id: userId }).fetch()[0];
-    return isAdmin(user);
-  },
-  remove: (userId: string): boolean => {
-    const user = Meteor.users.find({ _id: userId }).fetch()[0];
-    return isAdmin(user);
+Meteor.methods({
+  "tags.update"(newTag:Tag) {
+    if(!isAdmin(Meteor.user())) {
+      throw new Meteor.Error("Not Authorized");
+    }
+    Tags.update({
+      _id: newTag._id
+    }, {
+      $set: {
+        description: newTag.description,
+        name: newTag.name,
+        related: newTag.related,
+        usages: newTag.usages
+      }
+    })
   }
 });

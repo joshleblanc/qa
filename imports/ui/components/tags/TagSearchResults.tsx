@@ -91,17 +91,7 @@ class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, T
 
       const updatedTag: Tag = this.state.editingContext;
 
-      // *shrug* smh typescript
-      if(!updatedTag._id) return;
-
-      TagsModel.update(updatedTag._id, {
-        $set: {
-          description: updatedTag.description,
-          name: updatedTag.name,
-          related: updatedTag.related,
-          usages: updatedTag.usages
-        }
-      }, {}, () => this.setState({ editingContext: undefined }));
+      Meteor.call('tags.update', updatedTag, this.closeEdit);
     }
   }
 
