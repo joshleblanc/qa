@@ -122,11 +122,11 @@ class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, T
   }
 
   private editingView(tag: Tag): React.ReactNode {
-    const {classes} = this.props;
+    const { classes } = this.props;
     const { saving } = this.state;
     return (
       <Grid item xs={12} sm={6} md={4} lg={3} key={tag._id}>
-        <StyledPaper className={this.props.classes.root}>
+        <StyledPaper className={classes.root}>
           <Grid container>
             <Grid item xs={8}>
               <Typography variant={"h6"}>Editing <Chip label={tag.name}/></Typography>
