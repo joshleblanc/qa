@@ -62,7 +62,8 @@ Meteor.methods({
         description: newTag.description,
         name: newTag.name,
         related: newTag.related,
-        usages: newTag.usages
+        usages: newTag.usages,
+        updatedAt: new Date()
       }
     })
   }
