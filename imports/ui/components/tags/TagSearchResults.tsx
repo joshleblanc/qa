@@ -70,7 +70,7 @@ class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, T
   private updateTagDescriptionVisual(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>): void {
     event.persist();
 
-    this.setState((previousState: TagSearchResultsState) => {
+    this.setState((previousState: TagSearchResultsState, _: TagSearchResultsProps) => {
       if(!previousState.editingContext) return {};
 
       return {
@@ -81,7 +81,7 @@ class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, T
           usages: previousState.editingContext.usages,
           _id: previousState.editingContext._id
         }
-      };
+      } as TagSearchResultsState;
     });
   }
 
