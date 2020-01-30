@@ -133,7 +133,7 @@ class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, T
             </Grid>
             <Grid item xs={4} className={classes.buttons}>
               <div className={classes.wrapper}>
-                <IconButton size={"small"} className={classes.button} onClick={this.saveTag}>
+                <IconButton size={"small"} className={classes.button} onClick={this.saveTag} disabled={saving}>
                   <CheckIcon/>
                 </IconButton>
                 {saving && <CircularProgress size={36} className={classes.saving} />}
