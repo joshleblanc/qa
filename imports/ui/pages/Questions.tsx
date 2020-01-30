@@ -43,7 +43,11 @@ class QuestionList extends React.Component<QuestionListProps> {
     //   return <LinearProgress />
     // }
 
-    const questions = QuestionsModel.find({});
+    const questions = QuestionsModel.find({}, {
+      sort: {
+        createdAt: -1
+      }
+    });
     return(
       <Section>
         {questions.count() === 0 ? (
@@ -70,4 +74,4 @@ class QuestionList extends React.Component<QuestionListProps> {
   }
 }
 
-export const Questions = withStyles(styles)(autorun(QuestionList));
+export const Questions = autorun(QuestionList);

@@ -1,24 +1,40 @@
 import React from 'react';
 // @ts-ignore
-import { autorun } from 'meteor/cereal:reactive-render';
+import {autorun} from 'meteor/cereal:reactive-render';
 import {Meteor} from "meteor/meteor";
-import {Tags as TagsModel, Tag} from "/imports/api/models/tags";
+import {searchTagsSort, Tag, Tags as TagsModel} from "/imports/api/models/tags";
 import Grid from "/node_modules/@material-ui/core/Grid";
 import StyledPaper from "/imports/ui/components/material-ui/StyledPaper";
 import Typography from "/node_modules/@material-ui/core/Typography";
 import Chip from "/node_modules/@material-ui/core/Chip";
-import { WithStyles, Theme, createStyles, withStyles, IconButton, TextField } from '@material-ui/core';
+import {CircularProgress, createStyles, IconButton, TextField, Theme, WithStyles, withStyles} from '@material-ui/core';
 import EditIcon from "@material-ui/icons/EditTwoTone";
 import CloseIcon from "@material-ui/icons/CloseTwoTone";
-import { isAdmin, mutateUser } from '/imports/api/methods/extended_user';
+import CheckIcon from "@material-ui/icons/Done";
+import {isAdmin} from '/imports/api/methods/extended_user';
+import {SortBy} from "/imports/ui/components/tags/SortBySelector";
+import {grey} from "/node_modules/@material-ui/core/colors";
 
 const styles = (theme: Theme) => createStyles({
+  buttons: {
+    display: 'flex',
+    flexFlow: 'row-reverse'
+  },
+  tagContent: {},
   button: {
-    position: 'absolute',
-    top: theme.spacing(1),
-    right: theme.spacing(1),
+    padding: theme.spacing(1),
     opacity: 1,
     transition: '100ms all ease',
+  },
+  saving: {
+    color: grey[500],
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 1,
+  },
+  wrapper: {
+    position: 'relative',
   },
   root: {
     position: 'relative',
@@ -37,16 +53,19 @@ const styles = (theme: Theme) => createStyles({
 });
 
 export interface TagSearchResultsProps extends WithStyles<typeof styles> {
-  search:string
+  search: string,
+  sort: SortBy,
 }
 
 export interface TagSearchResultsState {
   editingContext?: Tag;
+  saving: boolean;
 }
 
 class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, TagSearchResultsState> {
   public state: TagSearchResultsState = {
-    editingContext: undefined
+    editingContext: undefined,
+    saving: false
   };
 
   private editTag(tag: Tag): void {
@@ -56,16 +75,20 @@ class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, T
   }
 
   static formatDescription(description: string): string {
-    if(description.length === 0) return "No description set yet.";
+    if (description.length === 0) return "No description set yet.";
 
     return description;
   }
 
-  private updateTagDescription_visual(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>): void {
+  private closeEdit = () => {
+    this.setState({editingContext: undefined, saving: false})
+  };
+
+  private updateTagDescriptionVisual(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void {
     event.persist();
 
-    this.setState((previousState: TagSearchResultsState) => {
-      if(!previousState.editingContext) return {};
+    this.setState((previousState: TagSearchResultsState, _: TagSearchResultsProps) => {
+      if (!previousState.editingContext) return {};
 
       return {
         editingContext: {
@@ -75,48 +98,59 @@ class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, T
           usages: previousState.editingContext.usages,
           _id: previousState.editingContext._id
         }
-      };
+      } as TagSearchResultsState;
     });
   }
+
+  private saveTag = () => {
+    const {editingContext} = this.state;
+    if (!editingContext) return;
+
+    this.setState({ saving: true });
+    Meteor.call('tags.update', editingContext, this.closeEdit);
+  };
 
   private checkForSubmission(ev: React.KeyboardEvent<HTMLDivElement>): void {
     ev.persist();
 
-    if(ev.keyCode === 13) {
+    if (ev.keyCode === 13) {
       // Enter key is pressed
-      if(!this.state.editingContext) return;
       ev.preventDefault();
 
-      const updatedTag: Tag = this.state.editingContext;
-
-      // *shrug* smh typescript
-      if(!updatedTag._id) return;
-
-      TagsModel.update(updatedTag._id, {
-        $set: {
-          description: updatedTag.description,
-          name: updatedTag.name,
-          related: updatedTag.related,
-          usages: updatedTag.usages
-        }
-      }, {}, () => this.setState({ editingContext: undefined }));
+      this.saveTag();
     }
   }
 
   private editingView(tag: Tag): React.ReactNode {
+    const { classes } = this.props;
+    const { saving } = this.state;
     return (
       <Grid item xs={12} sm={6} md={4} lg={3} key={tag._id}>
-        <StyledPaper className={this.props.classes.root}>
-          <IconButton size={"small"} className={this.props.classes.button}>
-            <CloseIcon />
-          </IconButton>
-          <Typography variant={"h6"}>Editing <Chip label={tag.name} /></Typography>
+        <StyledPaper className={classes.root}>
+          <Grid container>
+            <Grid item xs={8}>
+              <Typography variant={"h6"}>Editing <Chip label={tag.name}/></Typography>
+            </Grid>
+            <Grid item xs={4} className={classes.buttons}>
+              <div className={classes.wrapper}>
+                <IconButton size={"small"} className={classes.button} onClick={this.saveTag} disabled={saving}>
+                  <CheckIcon/>
+                </IconButton>
+                {saving && <CircularProgress size={36} className={classes.saving} />}
+              </div>
+
+              <IconButton size={"small"} className={classes.button} onClick={this.closeEdit}>
+                <CloseIcon/>
+              </IconButton>
+            </Grid>
+          </Grid>
+
           <TextField
             variant={"standard"}
             size={"small"}
             label={"Tag Description"}
             value={this.state.editingContext?.description}
-            onChange={(ev) => this.updateTagDescription_visual(ev)}
+            onChange={(ev) => this.updateTagDescriptionVisual(ev)}
             fullWidth
             autoFocus
             multiline
@@ -130,38 +164,49 @@ class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, T
   }
 
   public render() {
-    const { search } = this.props;
-    Meteor.subscribe('tags.search', search, 16);
+    const {search, sort, classes} = this.props;
+    Meteor.subscribe('tags.search', search, sort, 16);
 
     // The publication is limiting it to 36 documents. We can't duplicate that on the frontend
     // because we're only operating on what's returned from the server. Eg, limit: 36, skip: 36 would only return 36
     // documents. So if you did limit: 36, skip: 36 on the client, you'd end up with no documents, because you skipped
     // all 36 of them that are in the client side db
 
-    const tags = TagsModel.find({});
+    const tags = TagsModel.find({
+      name: new RegExp(`^${search}`, "i")
+    }, {
+      sort: searchTagsSort(sort)
+    });
 
-    return(
+    return (
       <Grid container spacing={2}>
         {
           tags.map((tag: Tag) => {
-            if(this.state.editingContext?._id === tag._id) {
+            if (this.state.editingContext?._id === tag._id) {
               return this.editingView(tag);
             }
 
             return (
               <Grid item xs={12} sm={6} md={4} lg={3} key={tag._id}>
                 <StyledPaper className={this.props.classes.root}>
-                  {isAdmin(Meteor.user()) && (
-                    <IconButton className={this.props.classes.button} size={"small"} onClick={() => this.editTag(tag)}>
-                      <EditIcon />
-                    </IconButton>
-                  )}
-                  <Typography variant={"caption"} color={"textSecondary"}>
-                    <Chip label={tag.name} />
-                    <span className={this.props.classes.usage}>
-                      x {tag.usages}
-                    </span>
-                  </Typography>
+                  <Grid container>
+                    <Grid item xs={8}>
+                      <Typography variant={"caption"} color={"textSecondary"}>
+                        <Chip label={tag.name}/>
+                        <span className={classes.usage}>
+                        x {tag.usages}
+                      </span>
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={4} className={classes.buttons}>
+                      {isAdmin(Meteor.user()) && (
+                        <IconButton className={classes.button} size={"small"}
+                                    onClick={() => this.editTag(tag)}>
+                          <EditIcon/>
+                        </IconButton>
+                      )}
+                    </Grid>
+                  </Grid>
                   <Typography variant={"body2"} className={this.props.classes.tagDesc}>
                     {TagSearchResultsComponent.formatDescription(tag.description)}
                   </Typography>

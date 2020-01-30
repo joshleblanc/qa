@@ -82,7 +82,8 @@ class QuestionComponent extends React.Component<QuestionProps> {
     return (
       <Section>
         <StyledPaper className={classes.root}>
-          <Typography variant={"body1"} className={classes.content}>
+          <Typography variant={"h6"} gutterBottom>Details</Typography>
+          <Typography variant={"body2"} className={classes.content}>
             {question.details}
           </Typography>
           <Section className={classes.details}>
