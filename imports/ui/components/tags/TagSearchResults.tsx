@@ -67,7 +67,7 @@ class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, T
     this.setState({ editingContext: undefined })
   };
 
-  private updateTagDescription_visual(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>): void {
+  private updateTagDescriptionVisual(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>): void {
     event.persist();
 
     this.setState((previousState: TagSearchResultsState) => {
@@ -112,7 +112,7 @@ class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, T
             size={"small"}
             label={"Tag Description"}
             value={this.state.editingContext?.description}
-            onChange={(ev) => this.updateTagDescription_visual(ev)}
+            onChange={(ev) => this.updateTagDescriptionVisual(ev)}
             fullWidth
             autoFocus
             multiline
