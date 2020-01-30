@@ -63,6 +63,10 @@ class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, T
     return description;
   }
 
+  private closeEdit = () => {
+    this.setState({ editingContext: undefined })
+  };
+
   private updateTagDescription_visual(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>): void {
     event.persist();
 
@@ -99,7 +103,7 @@ class TagSearchResultsComponent extends React.Component<TagSearchResultsProps, T
     return (
       <Grid item xs={12} sm={6} md={4} lg={3} key={tag._id}>
         <StyledPaper className={this.props.classes.root}>
-          <IconButton size={"small"} className={this.props.classes.button}>
+          <IconButton size={"small"} className={this.props.classes.button} onClick={this.closeEdit}>
             <CloseIcon />
           </IconButton>
           <Typography variant={"h6"}>Editing <Chip label={tag.name} /></Typography>
